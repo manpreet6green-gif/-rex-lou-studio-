@@ -499,26 +499,53 @@ Transcript (first 3000 chars):
 
 
 def extract_topics_fallback(transcript_text):
-    """Fallback: use keyword frequency to guess topics."""
-    # Look for capitalized phrases that repeat
-    words = transcript_text.split()
-    # Get common bigrams and trigrams with capital letters
-    topics = set()
-    topic_indicators = [
-        r'(?:how to|guide to|tips for|best|top \d+|ways to|secrets of|truth about)\s+([A-Z][a-z]+(?:\s+[A-Z]?[a-z]+){0,4})',
-        r'(?:side hustle|business idea|income stream|make money|earn|profit)(?:s|ing)?\s*(?:with|from|using|as|in)?\s*([A-Z][a-z]+(?:\s+[A-Z]?[a-z]+){0,4})',
-        r'\b([A-Z][a-z]+ (?:Automation|Marketing|Design|Services?|Creation|Writing|Editing|Management|Consulting|Development|Trading|Investing|Products?|Courses?|Apps?))\b',
+    """Fallback: extract meaningful topics from transcript using keyword analysis."""
+    import collections
+    
+    # Common stopwords to filter out
+    stops = {'the','a','an','is','are','was','were','be','been','being','have','has','had','do','does','did','will','would','could','should','may','might','can','shall','you','i','me','we','they','he','she','it','this','that','these','those','my','your','his','her','its','our','their','and','but','or','not','so','if','in','on','at','to','for','of','from','by','with','about','as','into','through','during','before','after','above','below','between','out','off','over','under','again','further','then','once','here','there','when','where','why','how','all','both','each','few','more','most','other','some','such','no','nor','only','own','same','just','very','too','also','now','up','down','like','get','got','make','made','know','see','go','come','take','think','say','said','way','thing','things','time','people','lot','lots','kind','kinds','sort','really','actually','basically','literally','probably','maybe','right','left','new','old','good','bad','big','small','high','low','many','much','well','back','still','even','ever','every','any','anything','everything','something','nothing','etc','yeah','yes','okay'}
+    
+    # Extract capitalized phrases (potential proper nouns and key concepts)
+    capitalized = re.findall(r'\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+){0,3})\b', transcript_text[:5000])
+    
+    # Also extract common topic patterns
+    patterns = [
+        r'(?:how to|guide to|tips for|best|top \d+|ways to|secrets of|truth about|introduction to)\s+([A-Za-z]+(?:\s+[A-Za-z]+){0,5})',
+        r'(?:talking about|discussing|cover|covering|focused on|topic is|subject is)\s+([A-Za-z]+(?:\s+[A-Za-z]+){0,5})',
+        r'(?:like|such as|for example|e\.g\.|including)\s+([A-Z][a-z]+(?:\s+[A-Z]?[a-z]+){0,4})',
     ]
-
-    for pattern in topic_indicators:
-        found = re.findall(pattern, transcript_text[:3000])
-        topics.update(f[:60] for f in found if len(f) > 5)
-
-    if topics:
-        return list(topics)[:10]
-
-    # Ultimate fallback: return section headers
-    return ['Featured Topics'] if not topics else list(topics)[:10]
+    
+    topics = []
+    
+    # Count capitalized phrases by frequency
+    cap_counts = collections.Counter(c.lower() for c in capitalized if len(c) > 6 and c.lower() not in stops and not c.lower().startswith(('hey','wow','okay','yeah','well','look','wait')))
+    
+    # Add top capitalized phrases
+    for phrase, count in cap_counts.most_common(8):
+        if count >= 2:  # Must appear at least twice
+            topics.append(phrase.title())
+    
+    # Add pattern matches
+    for pattern in patterns:
+        found = re.findall(pattern, transcript_text[:5000], re.IGNORECASE)
+        for f in found:
+            clean = f.strip().lower()
+            if len(clean) > 5 and clean not in stops:
+                topics.append(clean.title())
+    
+    # Deduplicate and limit
+    seen = set()
+    unique = []
+    for t in topics:
+        lower = t.lower()
+        if lower not in seen and len(t) > 3:
+            seen.add(lower)
+            unique.append(t[:60])
+    
+    if unique:
+        return unique[:10]
+    
+    return ['Featured Topics']
 
 
 def search_images(query, max_results=6):
