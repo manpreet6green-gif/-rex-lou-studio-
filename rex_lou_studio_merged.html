@@ -418,7 +418,9 @@ a{color:var(--rex)}
       <div class="avatarRow"><div class="av lou" id="louAv">L</div><div><strong id="louLabel" style="color:var(--lou)">Lou</strong><div class="status">Reacts · questions · speaks for the viewer</div></div></div>
     </div>
     <div class="field"><label class="label" for="topicInput">Video Topic</label><input id="topicInput" placeholder="e.g. LG suitcase TV, PS5 Pro, AirPods Max"></div>
+    <div class="field"><label class="label" for="ytUrlInput">🎬 YouTube Link <small style="font-weight:400;color:var(--sub)">Paste a video URL to extract topics</small></label><div style="display:flex;gap:8px"><input id="ytUrlInput" placeholder="https://www.youtube.com/watch?v=..." style="flex:1"><button class="btn" id="extractTopicsBtn" style="white-space:nowrap">🔍 Extract Topics</button></div><div id="ytTopicsChips" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px"></div><div class="status" id="ytTopicsStatus" style="display:none"></div></div>
     <div class="field"><label class="label" for="notesInput">Talking Points / Notes</label><textarea id="notesInput" placeholder="Paste specs, prices, opinions, bullet points. The more detail, the better the script."></textarea></div>
+    <div class="field"><label class="label" for="voiceInstructionsInput">🎙 Custom Voice Instructions <small style="font-weight:400;color:var(--sub)">Tone, style, personality, audience, call-to-action</small></label><textarea id="voiceInstructionsInput" placeholder="e.g. Make it sound professional and authoritative for a business audience. Use a storytelling style. End with a strong call-to-action to visit the website." style="min-height:55px"></textarea></div>
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
       <div class="field">
         <label class="label" for="toneSelect">Tone</label>
@@ -467,6 +469,7 @@ a{color:var(--rex)}
     <div class="studio">
       <!-- LEFT: Dialogue + Recording -->
       <aside class="side">
+        <div id="sceneMetadataPanel"></div>
         <div class="sideHead">DIALOGUE <span id="lineCount" style="margin-left:auto">0 lines</span></div>
         <div class="scroll" id="dialogueList"></div>
         <div class="controls">
@@ -581,7 +584,7 @@ const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
 const STORE = "rlx_v4";
 
 const state = {
-  tab:0, scene:0, script:[], topic:"",
+  tab:0, scene:0, script:[], topic:"", voiceInstructions:"", youtubeTopics:[], selectedYTTopics:new Set(), sceneMetadata:[],
   subPos:"bottom-center", subCustom:null,
   playbackMode:"all", selectedScenes:new Set(),
   playing:false, wordTimer:0, raf:0,
@@ -670,6 +673,7 @@ function bind(){
   });
 
   // Script
+  $("#extractTopicsBtn").addEventListener("click",extractYouTubeTopics);
   $("#generateBtn").addEventListener("click",generateScript);
   $("#regenBtn").addEventListener("click",generateScript);
   $("#sampleBtn").addEventListener("click",useSample);
@@ -1094,8 +1098,8 @@ async function autoResearchAll(){
   try{
     // Build scenes array with topic context
     const scenes=state.script.map(s=>({speaker:s.speaker,line:s.line}));
-    const topic=state.topic||$("#topicInput").value.trim()||"product";
-    const qs="topic="+encodeURIComponent(topic)+"&scenes="+encodeURIComponent(JSON.stringify(scenes))+"&max_per=4";
+    const topic=state.topic||$("#topicInput").value.trim()||"product";const notes=$("#notesInput").value.trim();
+    const qs="topic="+encodeURIComponent(topic)+"&notes="+encodeURIComponent(notes)+"&scenes="+encodeURIComponent(JSON.stringify(scenes))+"&max_per=4";
     const r=await fetch("/media-research-scenes?"+qs);
     const data=await r.json();
 
@@ -1196,8 +1200,8 @@ function addMediaLayer(img,src,title,sceneIdx){
 function addMediaCard(layer){
   const item=document.createElement("div");item.className="mediaItem selected";item.dataset.mediaId=layer.id;
   const sceneNum=(layer.sceneIdx!=null?layer.sceneIdx:state.scene)+1;
-  item.innerHTML='<img src="'+layer.src+'" alt=""><div class="mediaInfo">Scene '+sceneNum+': '+escHtml(layer.title)+'</div><button type="button">Select</button>';
-  item.querySelector("button").addEventListener("click",()=>{state.selectedMediaId=layer.id;state.editLayer="media";$("#editLayer").value="media";$("#mediaScale").value=Math.round(layer.w*100);selectMediaCard(layer.id);renderAll();});
+  item.innerHTML='<img src="'+layer.src+'" alt=""><div class="mediaInfo">Scene '+sceneNum+': '+escHtml(layer.title)+'</div><button type="button" class="mediaSelectBtn">Select</button><button type="button" class="mediaDeleteBtn" title="Delete">✕</button>';
+  item.querySelector(".mediaSelectBtn").addEventListener("click",()=>{state.selectedMediaId=layer.id;state.editLayer="media";$("#editLayer").value="media";$("#mediaScale").value=Math.round(layer.w*100);selectMediaCard(layer.id);renderAll();});item.querySelector(".mediaDeleteBtn").addEventListener("click",(e)=>{e.stopPropagation();deleteMediaLayer(layer.id);});
   $("#mediaList").prepend(item);selectMediaCard(layer.id);
 }
 function selectMediaCard(id){$$(".mediaItem").forEach(el=>el.classList.toggle("selected",el.dataset.mediaId===id));}
@@ -1244,6 +1248,79 @@ function resizeCanvases(){
   const dpr=Math.min(window.devicePixelRatio||1,2);
   const c=$("#previewCanvas");if(c){const r=c.getBoundingClientRect();c.width=Math.max(180,Math.round(r.width||195))*dpr;c.height=Math.max(320,Math.round(r.height||347))*dpr;}
   const bpc=$("#bgPreviewCanvas");if(bpc&&$("#bgPreviewBox").style.display!=="none"){const r=bpc.getBoundingClientRect();bpc.width=Math.max(200,Math.round(r.width||400));bpc.height=105;}
+}
+
+/* ── YOUTUBE TOPIC EXTRACTION ── */
+async function extractYouTubeTopics(){
+  const url=$("#ytUrlInput").value.trim();
+  if(!url){$("#ytTopicsStatus").style.display="block";$("#ytTopicsStatus").textContent="Paste a YouTube URL first.";return;}
+  const status=$("#ytTopicsStatus"),chips=$("#ytTopicsChips"),btn=$("#extractTopicsBtn");
+  status.style.display="block";status.innerHTML='<span class="spinner"></span>Extracting topics from video…';
+  btn.disabled=true;chips.innerHTML="";
+  try{
+    const apiKey=state.claudeApiKey||localStorage.getItem(STORE+"_claudekey")||"";
+    const r=await fetch("/youtube-topics?url="+encodeURIComponent(url)+"&api_key="+encodeURIComponent(apiKey));
+    const data=await r.json();
+    if(!data.ok){status.textContent="⚠ "+(data.error||"Extraction failed");btn.disabled=false;return;}
+    state.youtubeTopics=data.topics||[];
+    state.selectedYTTopics=new Set();
+    displayYouTubeTopics();
+    status.textContent=data.topics?.length?"✓ "+data.topics.length+" topics found — select ones for your script":"ℹ No topics detected. Try a different video.";
+    btn.disabled=false;
+  }catch(e){
+    status.textContent="⚠ Extraction failed: "+(e.message||"network error");
+    btn.disabled=false;
+  }
+}
+function displayYouTubeTopics(){
+  const chips=$("#ytTopicsChips");
+  chips.innerHTML="";
+  if(!state.youtubeTopics.length){chips.style.display="none";return;}
+  chips.style.display="flex";
+  state.youtubeTopics.forEach(t=>{
+    const chip=document.createElement("button");
+    chip.type="button";chip.className="sceneChip"+(state.selectedYTTopics.has(t)?" on":"");
+    chip.textContent=t;chip.style.cssText="font-size:.75rem;padding:5px 10px";
+    chip.addEventListener("click",()=>{
+      if(state.selectedYTTopics.has(t))state.selectedYTTopics.delete(t);
+      else state.selectedYTTopics.add(t);
+      displayYouTubeTopics();
+    });
+    chips.appendChild(chip);
+  });
+  // Add "Generate from Selected" button if topics selected
+  if(state.selectedYTTopics.size){
+    const genBtn=document.createElement("button");
+    genBtn.type="button";genBtn.className="btn primary";
+    genBtn.textContent="✨ Generate Script from "+state.selectedYTTopics.size+" Topic"+(state.selectedYTTopics.size>1?"s":"");
+    genBtn.style.cssText="margin-top:6px;padding:6px 14px;font-size:.8rem";
+    genBtn.addEventListener("click",()=>{
+      const selectedTopics=[...state.selectedYTTopics].join(", ");
+      $("#topicInput").value=selectedTopics;
+      $("#notesInput").value="Topics: "+selectedTopics+"\nGenerated from YouTube video analysis.";
+      state.topic=selectedTopics;
+      setTimeout(()=>generateScript(),100);
+    });
+    chips.appendChild(genBtn);
+  }
+}
+
+/* ── MEDIA LAYER DELETION ── */
+function deleteMediaLayer(id){
+  const layer=findMediaLayerById(id);
+  if(!layer)return;
+  const idx=layer.sceneIdx!=null?layer.sceneIdx:state.scene;
+  if(state.mediaLayers[idx]){
+    state.mediaLayers[idx]=state.mediaLayers[idx].filter(l=>l.id!==id);
+  }
+  if(state.selectedMediaId===id){
+    const remaining=sceneMedia(idx);
+    state.selectedMediaId=remaining.length?remaining[remaining.length-1].id:null;
+  }
+  // Remove card from DOM
+  const card=document.querySelector('[data-media-id="'+id+'"]');
+  if(card)card.remove();
+  renderAll();
 }
 
 /* ── SCENE MANAGEMENT ── */
@@ -1555,28 +1632,29 @@ async function generateScript(){
   const rexName=$("#rexName").value.trim()||"Rex",louName=$("#louName").value.trim()||"Lou";
   const vo=$("#voiceOverride").value;if(vo)state.voiceEngine=vo;
   const apiKey=state.claudeApiKey||localStorage.getItem(STORE+"_claudekey")||"";
-  if(apiKey)await generateWithAI(notes,topic,rexName,louName,lineCount,tone,apiKey);
-  else generateFast(notes,topic,rexName,louName,lineCount,tone);
+  const voiceInstructions=$("#voiceInstructionsInput").value.trim();if(voiceInstructions)state.voiceInstructions=voiceInstructions;
+  if(apiKey)await generateWithAI(notes,topic,rexName,louName,lineCount,tone,apiKey,voiceInstructions);
+  else generateFast(notes,topic,rexName,louName,lineCount,tone,voiceInstructions);
 }
 
-async function generateWithAI(notes,topic,rexName,louName,lineCount,tone,apiKey){
+async function generateWithAI(notes,topic,rexName,louName,lineCount,tone,apiKey,voiceInstructions=""){
   const btn=$("#generateBtn"),status=$("#scriptStatus"),prog=$("#genProgress"),fill=$("#genProgressFill");
   btn.disabled=true;status.innerHTML='<span class="spinner"></span>AI writing...';prog.style.display="block";fill.style.width="20%";
   const tones={funny:"casual and funny with natural banter",hype:"high energy and hype like an excited YouTuber",informative:"clear and informative",debate:"slight disagreement",shocked:"shocked and amazed"};
-  const sys="You write dialogue for two characters in viral short-form videos.\n"+rexName+" = knowledgeable friend who explains clearly. "+louName+" = the viewer's voice, reacts with surprise or humor.\nCRITICAL: EXACTLY "+lineCount+" lines, alternating, starting with "+rexName+". Line 1 MUST be a hook. Max 18 words per line. Tone: "+tones[tone]+". Return ONLY valid JSON: {\"lines\":[{\"speaker\":\"...\",\"line\":\"...\"}]}";
+  const viPrompt=voiceInstructions?"\nVoice/Style Instructions: "+voiceInstructions+"\nFollow these instructions for tone, style, personality, audience, and call-to-action.":"";const sys="You write dialogue for two characters in viral short-form videos.\n"+rexName+" = knowledgeable friend who explains clearly. "+louName+" = the viewer's voice, reacts with surprise or humor.\nCRITICAL: EXACTLY "+lineCount+" lines, alternating, starting with "+rexName+". Line 1 MUST be a hook. Max 18 words per line. Tone: "+tones[tone]+"."+viPrompt+"\n\nFor each scene you write, also provide scene metadata: a short title, the scene objective, an image search prompt, a video prompt, product placement notes, and on-screen text suggestions.\n\nReturn ONLY valid JSON in this format: {\"lines\":[{\"speaker\":\"...\",\"line\":\"...\"}],\"sceneMetadata\":[{\"title\":\"...\",\"objective\":\"...\",\"imagePrompt\":\"...\",\"videoPrompt\":\"...\",\"productPlacement\":\"...\",\"onScreenText\":\"...\"}]}";
   try{
     fill.style.width="50%";const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":apiKey,"anthropic-version":"2023-06-01"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,system:sys,messages:[{role:"user",content:"Topic: "+(topic||"this topic")+"\nNotes: "+notes}]})});
     fill.style.width="80%";if(!r.ok){const d=await r.json();throw new Error(d.error?.message||r.status);}
     const data=await r.json(),raw=data.content?.[0]?.text||"",jm=raw.match(/\{[\s\S]*\}/);if(!jm)throw new Error("No JSON");
     const parsed=JSON.parse(jm[0]);if(!parsed.lines?.length)throw new Error("Empty");
-    state.script=parsed.lines.map(l=>({speaker:l.speaker===rexName?"Rex":"Lou",line:l.line}));
+    state.script=parsed.lines.map(l=>({speaker:l.speaker===rexName?"Rex":"Lou",line:l.line}));if(parsed.sceneMetadata&&Array.isArray(parsed.sceneMetadata)){state.sceneMetadata=parsed.sceneMetadata.slice(0,parsed.lines.length);while(state.sceneMetadata.length<state.script.length)state.sceneMetadata.push({title:"Scene "+(state.sceneMetadata.length+1),objective:"",imagePrompt:"",videoPrompt:"",productPlacement:"",onScreenText:""});}else{state.sceneMetadata=state.script.map((_,i)=>({title:"Scene "+(i+1),objective:"",imagePrompt:"",videoPrompt:"",productPlacement:"",onScreenText:""}));}
     fill.style.width="100%";status.textContent="✓ AI script — "+state.script.length+" lines";
   }catch(err){console.error(err);status.textContent="AI failed ("+err.message+") — using built-in";generateFast(notes,topic,rexName,louName,lineCount,tone);return;}
   finally{btn.disabled=false;setTimeout(()=>{prog.style.display="none";fill.style.width="0%";},800);}
   finalizeScript();
 }
 
-function generateFast(notes,topic,rexName,louName,lineCount,tone){
+function generateFast(notes,topic,rexName,louName,lineCount,tone,voiceInstructions=""){
   const t=topic||"this product";
   const hooks={funny:["Nobody asked for a "+t+" but I'm so glad it exists.","This "+t+" broke my brain and I need to talk about it.","I have strong opinions about the "+t+" and zero regrets."],hype:["The "+t+" just changed everything — I'm not being dramatic.","Stop what you're doing. The "+t+" is actually here.","The "+t+" dropped and the specs are genuinely insane."],informative:["Most people don't know what makes the "+t+" actually different.","The "+t+" has one feature nobody is talking about.","Before you buy a "+t+", there's something you need to know."],debate:["Hot take: the "+t+" is either genius or a huge mistake.","People are fighting over the "+t+" and honestly, both sides have a point."],shocked:["I physically gasped when I saw what the "+t+" actually does.","Wait until you see what the "+t+" is capable of."]};
   const hks=hooks[tone]||hooks.funny;
@@ -1598,17 +1676,36 @@ function generateFast(notes,topic,rexName,louName,lineCount,tone){
     {speaker:"Rex",line:"That's exactly why we make these. Someone has to say what everyone's thinking."},
     {speaker:"Lou",line:"Keep doing it. I will be right here reacting dramatically."}
   ];
-  state.script=all.slice(0,lineCount);
+  state.script=all.slice(0,lineCount);state.sceneMetadata=state.script.map((_,i)=>({title:"Scene "+(i+1),objective:"Highlight key features and build excitement",imagePrompt:topic+" product showcase scene "+(i+1),videoPrompt:"B-roll of "+topic+" in action",productPlacement:i===1?"Center frame, close-up":"Contextual placement",onScreenText:i===0?"You won't believe this "+topic:"Key specs of "+topic}));
   $("#scriptStatus").textContent="✓ Script ready — "+state.script.length+" lines";
   finalizeScript();
 }
 
 function useSample(){$("#topicInput").value="portable suitcase TV";$("#notesInput").value="27 inch display folds inside a suitcase-style case on wheels. Battery powered for 3 hours. AirPlay and HDMI. Costs $1200. Great for patios, dorms, travel. Unusual product nobody asked for but everyone wants.";}
-function finalizeScript(){state.playbackMode="all";state.selectedScenes=new Set(state.script.map((_,i)=>i));buildScriptList();buildStudio();updateSceneSelectors();$("#scriptActions").style.display="flex";autoResearchAll();}
+function finalizeScript(){state.playbackMode="all";state.selectedScenes=new Set(state.script.map((_,i)=>i));buildScriptList();buildStudio();updateSceneSelectors();$("#scriptActions").style.display="flex";renderSceneMetadata();autoResearchAll();}
 function buildScriptList(){const list=$("#scriptList");list.innerHTML="";state.script.forEach((s,i)=>{const d=document.createElement("div");d.className="line";d.innerHTML='<span class="pill '+(s.speaker==="Rex"?"re":"lo")+'">'+escHtml(s.speaker)+'</span><p>'+escHtml(s.line)+'</p><span class="num">'+String(i+1).padStart(2,"0")+'</span>';list.appendChild(d);});}
 
 /* ── STUDIO BUILD ── */
-function buildStudio(){const list=$("#dialogueList");list.innerHTML="";$("#lineCount").textContent=state.script.length+" lines";state.script.forEach((s,i)=>{const d=document.createElement("div");d.className="dialogue"+(i===state.scene?" active":"");d.innerHTML='<span class="pill '+(s.speaker==="Rex"?"re":"lo")+'">'+escHtml(s.speaker)+'</span><p>'+escHtml(s.line)+'</p>';d.addEventListener("click",()=>setScene(i));list.appendChild(d);});updateSceneLabels();updateSceneSelectors();}
+function renderSceneMetadata(){
+  const container=$("#sceneMetadataPanel");
+  if(!container||!state.sceneMetadata||!state.sceneMetadata.length){if(container)container.innerHTML="";return;}
+  let html='<div class="sideHead">🎬 SCENE BREAKDOWN <span style="margin-left:auto;font-size:.65rem;color:var(--sub)">AI-generated</span></div><div class="scroll" style="max-height:300px">';
+  state.script.forEach((s,i)=>{
+    const m=state.sceneMetadata[i]||{};
+    const pillCls=s.speaker==="Rex"?"re":"lo";
+    html+='<div class="sceneMetaCard" style="margin:6px 0;padding:8px;background:var(--card);border-radius:8px;border-left:3px solid '+(s.speaker==="Rex"?"var(--rex)":"var(--lou)")+'">';
+    html+='<div style="font-weight:700;font-size:.75rem;margin-bottom:4px"><span class="pill '+pillCls+'" style="font-size:.6rem">Scene '+(i+1)+'</span> '+(m.title||'Scene '+(i+1))+'</div>';
+    if(m.objective)html+='<div style="font-size:.65rem;color:var(--sub);margin-bottom:3px"><b>Goal:</b> '+escHtml(m.objective)+'</div>';
+    if(m.imagePrompt)html+='<div style="font-size:.6rem;color:var(--ok);margin-bottom:2px">🖼 Image: '+escHtml(m.imagePrompt.slice(0,80))+'</div>';
+    if(m.videoPrompt)html+='<div style="font-size:.6rem;color:var(--ok);margin-bottom:2px">🎥 Video: '+escHtml(m.videoPrompt.slice(0,80))+'</div>';
+    if(m.productPlacement)html+='<div style="font-size:.6rem;color:var(--warn);margin-bottom:2px">📦 Placement: '+escHtml(m.productPlacement.slice(0,80))+'</div>';
+    if(m.onScreenText)html+='<div style="font-size:.6rem;color:var(--sub);margin-bottom:2px">💬 On-screen: '+escHtml(m.onScreenText.slice(0,80))+'</div>';
+    html+='</div>';
+  });
+  html+='</div>';
+  container.innerHTML=html;
+}
+function buildStudio(){renderSceneMetadata();const list=$("#dialogueList");list.innerHTML="";$("#lineCount").textContent=state.script.length+" lines";state.script.forEach((s,i)=>{const d=document.createElement("div");d.className="dialogue"+(i===state.scene?" active":"");d.innerHTML='<span class="pill '+(s.speaker==="Rex"?"re":"lo")+'">'+escHtml(s.speaker)+'</span><p>'+escHtml(s.line)+'</p>';d.addEventListener("click",()=>setScene(i));list.appendChild(d);});updateSceneLabels();updateSceneSelectors();}
 
 /* ── PLAYBACK ── */
 async function previewAll(){
