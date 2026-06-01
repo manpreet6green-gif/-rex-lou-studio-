@@ -1,0 +1,1709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rex &amp; Lou Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Inter:wght@400;600;700;800;900&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════════════════
+   REX & LOU STUDIO — MERGED v4.0
+   CSS Design System
+   ═══════════════════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#090a0f;--panel:#11131a;--panel2:#171a22;--panel3:#1e2130;
+  --line:rgba(255,255,255,.11);--line2:rgba(255,255,255,.18);
+  --muted:#85899b;--text:#f4f6fb;
+  --rex:#4a9eff;--rex-soft:rgba(74,158,255,.16);--rex-glow:rgba(74,158,255,.28);
+  --lou:#ffb84a;--lou-soft:rgba(255,184,74,.17);--lou-glow:rgba(255,184,74,.28);
+  --ok:#41cf7d;--ok-soft:rgba(65,207,125,.14);
+  --bad:#ff5e72;--warn:#ffb84a;
+  --purple:rgba(160,100,255,.7);
+}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;min-height:100%;overflow:hidden}
+button,input,textarea,select{font:inherit;outline:none}
+a{color:var(--rex)}
+
+/* ── APP SHELL ── */
+.app{height:100%;display:flex;flex-direction:column}
+.hdr{height:52px;display:flex;align-items:center;gap:12px;padding:0 20px;border-bottom:1px solid var(--line);background:rgba(9,10,15,.97);flex-shrink:0;z-index:100}
+.lights{display:flex;gap:5px}.light{width:10px;height:10px;border-radius:50%}
+.brand{font-family:"Bebas Neue",sans-serif;font-size:1.4rem;letter-spacing:.05em}
+.tag{font:700 .56rem "Space Mono",monospace;color:var(--lou);border:1px solid var(--lou-glow);background:var(--lou-soft);border-radius:4px;padding:2px 7px}
+
+/* ── NAV TABS ── */
+.tabs{height:42px;display:flex;gap:1px;padding:0 20px;border-bottom:1px solid var(--line);background:#0b0c12;overflow:auto;flex-shrink:0}
+.tab{display:flex;align-items:center;gap:7px;padding:0 16px;border:0;border-bottom:2px solid transparent;background:transparent;color:var(--muted);font:700 .64rem "Space Mono",monospace;letter-spacing:.06em;cursor:pointer;white-space:nowrap;transition:all .15s}
+.tab:hover{color:var(--text)}
+.tab span{display:grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--panel2);font-size:.56rem;transition:all .15s}
+.tab.active{color:var(--rex);border-bottom-color:var(--rex)}
+.tab.active span{background:var(--rex);color:#05101d}
+.tab.done{color:var(--ok);border-bottom-color:var(--ok)}
+.tab.done span{background:var(--ok);color:#031209}
+
+/* ── PAGES ── */
+.page{display:none;flex:1;min-height:0;overflow:auto}
+.page.active{display:block}
+.inner{max-width:980px;margin:0 auto;padding:24px 20px 40px}
+.title{font-family:"Bebas Neue",sans-serif;font-size:1.85rem;letter-spacing:.04em;line-height:1}
+.sub{color:var(--muted);font-size:.84rem;line-height:1.6;margin:6px 0 16px;max-width:760px}
+
+/* ── CARDS & PILLS ── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:15px}
+.card.rex{border-color:var(--rex-glow);background:linear-gradient(180deg,rgba(74,158,255,.07),rgba(74,158,255,.02))}
+.card.lou{border-color:var(--lou-glow);background:linear-gradient(180deg,rgba(255,184,74,.08),rgba(255,184,74,.02))}
+.pill{display:inline-flex;align-items:center;border-radius:4px;padding:2px 8px;font:700 .62rem "Space Mono",monospace}
+.pill.re{color:var(--rex);background:var(--rex-soft);border:1px solid var(--rex-glow)}
+.pill.lo{color:var(--lou);background:var(--lou-soft);border:1px solid var(--lou-glow)}
+.pill.ok{color:var(--ok);background:var(--ok-soft);border:1px solid rgba(65,207,125,.24)}
+.pill.pl{color:#d4b0ff;background:rgba(160,100,255,.1);border:1px solid rgba(160,100,255,.2)}
+
+/* ── FORMS ── */
+.label{display:block;font:700 .58rem "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.field{margin:11px 0}
+.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);border-radius:8px;background:#0e1016;color:var(--text);padding:9px 11px;font-size:.86rem;transition:border .15s}
+.field textarea{min-height:100px;line-height:1.55;resize:vertical}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--rex)}
+
+/* ── NOTES ── */
+.note{border-radius:8px;padding:11px 13px;font-size:.8rem;line-height:1.6;margin:12px 0}
+.note.info{border:1px solid var(--rex-glow);background:rgba(74,158,255,.07);color:#9fcbff}
+.note.warn{border:1px solid var(--lou-glow);background:rgba(255,184,74,.06);color:#ffd394}
+.note.ok{border:1px solid rgba(65,207,125,.22);background:rgba(65,207,125,.06);color:#a6f5c8}
+.note.free{border:1px solid rgba(160,100,255,.25);background:rgba(160,100,255,.06);color:#d4b0ff}
+.note.small{padding:7px 10px;font-size:.73rem}
+
+/* ── UPLOAD ZONES ── */
+.upload-zone{position:relative;border:2px dashed var(--line);border-radius:8px;background:var(--panel2);cursor:pointer;transition:.16s border-color, .16s background;overflow:hidden}
+.upload-zone:hover{border-color:var(--rex);background:var(--panel3)}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-zone .hint{text-align:center;color:var(--muted);font-size:.78rem;line-height:1.5;padding:14px;pointer-events:none}
+.upload-zone .hint strong{display:block;color:var(--text);font-size:.85rem;margin-bottom:2px}
+.upload-zone.char-zone{height:155px}
+.upload-zone .preview-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:6px;pointer-events:none}
+.bg-upload-row{display:flex;gap:12px;align-items:flex-start;margin-top:6px}
+.bg-zone{flex:0 0 180px;height:105px}
+.bg-preview-box{flex:1;min-height:105px;border:1px solid var(--line);border-radius:8px;background:#050507;overflow:hidden;position:relative;display:none}
+.bg-preview-box canvas{width:100%;height:100%;display:block}
+.bg-preview-label{position:absolute;top:5px;left:7px;font:700 .52rem "Space Mono",monospace;color:rgba(255,255,255,.45);letter-spacing:.06em;pointer-events:none}
+.bg-rem-note{display:none;font:700 .55rem "Space Mono",monospace;color:var(--rex);margin-top:3px;letter-spacing:.04em}
+
+/* ── VOICE ENGINE TABS ── */
+.voice-tabs{display:flex;gap:4px;margin:10px 0 14px}
+.voice-tab{flex:1;padding:8px 4px;border:1px solid var(--line);border-radius:7px;background:var(--panel2);color:var(--muted);font:700 .62rem "Space Mono",monospace;cursor:pointer;text-align:center;transition:.15s;line-height:1.3}
+.voice-tab:hover{background:var(--panel3);color:var(--text)}
+.voice-tab.active{border-color:var(--ok);background:var(--ok-soft);color:var(--ok)}
+.voice-tab small{font:normal .58rem Inter,sans-serif;opacity:.75;display:block;margin-top:1px}
+.voice-config{display:none;margin-top:8px}
+.voice-config.active{display:block}
+
+/* ── BUTTONS ── */
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:8px;padding:9px 14px;font-weight:700;font-size:.82rem;cursor:pointer;transition:.15s transform,.15s background;white-space:nowrap}
+.btn:hover:not(:disabled){transform:translateY(-1px);background:#202532}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.btn.primary{background:var(--rex);border-color:var(--rex);color:#fff}
+.btn.primary:hover:not(:disabled){background:#3a8eef}
+.btn.ok{background:var(--ok);border-color:var(--ok);color:#001208}
+.btn.small{padding:5px 10px;font-size:.73rem;border-radius:6px}
+.btn.purple{background:var(--purple);border-color:rgba(160,100,255,.4);color:#fff}
+.btn.danger{background:var(--bad);border-color:var(--bad);color:#fff}
+
+/* ── STATUS & PROGRESS ── */
+.status{font-size:.77rem;color:var(--muted);line-height:1.5}
+.progress-bar{height:4px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden;margin:7px 0}
+.progress-fill{height:100%;background:var(--rex);border-radius:3px;transition:width .25s ease}
+.spinner{display:inline-block;width:12px;height:12px;border:2px solid rgba(255,255,255,.15);border-top-color:var(--rex);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:5px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── SCRIPT PAGE ── */
+.avatars{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.avatarRow{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}
+.av{width:36px;height:36px;border-radius:8px;display:grid;place-items:center;font-weight:900;background:var(--rex-soft);color:var(--rex);background-size:cover;background-position:center top;flex-shrink:0}
+.av.lou{background-color:var(--lou-soft);color:var(--lou)}
+.lines{display:flex;flex-direction:column;gap:7px;margin-top:16px}
+.line{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:start;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.line p{font-size:.84rem;line-height:1.5}
+.num{font:700 .58rem "Space Mono",monospace;color:var(--muted);padding-top:2px}
+
+/* ── STUDIO PAGE ── */
+.studio{height:calc(100vh - 94px);display:grid;grid-template-columns:255px minmax(300px,1fr) 240px;min-height:0}
+.side{background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.side.right{border-left:1px solid var(--line);border-right:0}
+.sideHead{height:38px;display:flex;align-items:center;gap:8px;padding:0 11px;border-bottom:1px solid var(--line);font:700 .6rem "Space Mono",monospace;color:var(--muted);letter-spacing:.06em;flex-shrink:0}
+.scroll{flex:1;overflow-y:auto;padding:8px}
+.dialogue{border:1px solid transparent;border-radius:7px;padding:8px 10px;cursor:pointer;margin-bottom:3px;transition:all .12s}
+.dialogue:hover{background:var(--panel2)}
+.dialogue.active{border-color:var(--rex);background:var(--panel2)}
+.dialogue p{font-size:.77rem;line-height:1.4;margin-top:4px}
+
+/* ── CENTER CANVAS ── */
+.center{display:flex;flex-direction:column;min-width:0;background:#050608;overflow:hidden}
+.stage{flex:1;display:grid;place-items:center;padding:12px;min-height:0;overflow:hidden}
+.phone{width:min(210px,52vw);background:#0b0b0d;border:2px solid var(--line);border-radius:26px;box-shadow:0 18px 60px rgba(0,0,0,.6);overflow:hidden;flex-shrink:0}
+.phoneTop,.phoneBot{height:16px;display:grid;place-items:center;background:#070708;flex-shrink:0}
+.dot{width:5px;height:5px;border-radius:50%;background:#202026}
+.home{width:34px;height:3px;border-radius:10px;background:#27272d}
+.screen{aspect-ratio:9/16;background:#080912;position:relative}
+.screen canvas{width:100%;height:100%;display:block;cursor:grab}
+.screen canvas:active{cursor:grabbing}
+
+/* ── CONTROLS ── */
+.controls{border-top:1px solid var(--line);padding:8px 9px;background:var(--panel);display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;flex-shrink:0}
+.posGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;width:100%}
+.pos{border:1px solid var(--line);background:var(--panel2);color:var(--muted);border-radius:5px;padding:4px 2px;font-size:.65rem;cursor:pointer;text-align:center;transition:all .12s}
+.pos:hover{border-color:var(--muted)}
+.pos.active{border-color:var(--rex);background:var(--rex-soft);color:var(--rex)}
+.toolrow{width:100%;display:grid;grid-template-columns:repeat(4,1fr) auto;gap:5px;align-items:end}
+.toolrow label{font:700 .54rem "Space Mono",monospace;color:var(--muted);letter-spacing:.05em;display:block;margin-bottom:2px}
+.toolrow input[type=range]{width:100%;accent-color:var(--rex)}
+.toolrow select{width:100%;background:#0e1016;border:1px solid var(--line);border-radius:5px;color:var(--text);padding:4px 5px;font-size:.73rem}
+
+/* ── SCENE CHIPS ── */
+.sceneBox{border:1px solid var(--line);background:var(--panel2);border-radius:8px;padding:9px;margin-top:8px;width:100%}
+.sceneTop{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.sceneChips{display:flex;gap:4px;flex-wrap:wrap;margin-top:7px}
+.sceneChip{border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:5px;padding:4px 7px;font:700 .63rem "Space Mono",monospace;cursor:pointer;transition:all .12s}
+.sceneChip:hover{background:var(--panel3)}
+.sceneChip.on{border-color:var(--ok);background:var(--ok-soft);color:var(--ok)}
+
+/* ── RECORDING PANEL ── */
+.rec-panel{border:1px solid rgba(255,70,70,.25);background:rgba(255,70,70,.05);border-radius:8px;padding:9px;margin-top:8px;width:100%}
+.rec-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#ff3b3b;animation:rp 1.2s ease-in-out infinite}
+.rec-dot.off{animation:none;opacity:.3;background:#555}
+@keyframes rp{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* ── MEDIA SIDEBAR ── */
+.mediaTabs{display:flex;gap:3px;margin-bottom:7px}
+.mediaTab{flex:1;padding:4px 3px;border:1px solid var(--line);border-radius:5px;background:var(--panel2);color:var(--muted);font:700 .58rem "Space Mono",monospace;cursor:pointer;text-align:center;transition:.12s}
+.mediaTab.active{border-color:var(--rex);color:var(--rex);background:var(--rex-soft)}
+.mediaItem{border:1px solid var(--line);background:var(--panel2);border-radius:7px;overflow:hidden;margin-bottom:7px;transition:all .12s}
+.mediaItem:hover{border-color:var(--rex)}
+.mediaItem.selected{border-color:var(--ok)}
+.mediaItem img{width:100%;height:70px;object-fit:cover;display:block}
+.mediaItem button{width:100%;display:block;text-align:center;border:0;border-top:1px solid var(--line);background:var(--rex-soft);color:var(--rex);padding:5px;font-weight:800;font-size:.7rem;cursor:pointer;transition:all .12s}
+.mediaItem button:hover{background:var(--rex);color:#fff}
+.mediaInfo{padding:5px 7px;font-size:.69rem;color:var(--muted);line-height:1.3}
+.mediaUrlRow{display:flex;gap:4px;margin:6px 0}
+.mediaUrlRow input{min-width:0;flex:1;border:1px solid var(--line);border-radius:6px;background:#0e1016;color:var(--text);padding:6px 8px;font-size:.72rem}
+.searchResults{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:7px}
+.resultThumb{border:2px solid transparent;border-radius:6px;overflow:hidden;cursor:pointer;aspect-ratio:1;background:#111;transition:.12s;position:relative}
+.resultThumb:hover{border-color:var(--rex)}
+.resultThumb img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* ── RESEARCH TAB ── */
+.researchSceneHeader{display:flex;align-items:center;gap:6px;margin:10px 0 5px;padding:6px 8px;background:var(--panel);border-radius:6px;border:1px solid var(--line)}
+.researchSceneHeader:first-child{margin-top:4px}
+.researchSceneBadge{display:inline-flex;align-items:center;gap:4px;font:700 .58rem "Space Mono",monospace;color:var(--rex);flex-shrink:0}
+.researchSceneBadge .pill{font-size:.56rem}
+.researchSceneText{font-size:.68rem;color:var(--muted);line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.researchResultsGrid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:4px}
+.researchThumb{border:2px solid var(--line);border-radius:6px;overflow:hidden;cursor:pointer;aspect-ratio:1;background:#0e1016;transition:.14s;position:relative}
+.researchThumb:hover{border-color:var(--rex)}
+.researchThumb img{width:100%;height:100%;object-fit:cover;display:block}
+.researchThumb .addBtn{position:absolute;top:3px;right:3px;background:var(--rex);border:none;border-radius:3px;color:#fff;padding:1px 5px;font-size:.55rem;font-weight:800;cursor:pointer;opacity:0;transition:.12s;pointer-events:none}
+.researchThumb:hover .addBtn{opacity:1;pointer-events:auto}
+.researchThumb .srcTag{position:absolute;bottom:2px;left:2px;background:rgba(0,0,0,.75);color:rgba(255,255,255,.7);padding:1px 4px;font-size:.48rem;border-radius:2px;max-width:calc(100% - 4px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;pointer-events:none}
+.researchActions{margin-bottom:8px;display:flex;gap:5px;flex-wrap:wrap}
+.researchNote{font-size:.65rem;color:var(--muted);line-height:1.4;margin:4px 0 8px;padding:6px 8px;background:var(--panel);border-radius:5px;border-left:3px solid var(--purple)}
+
+/* ── TOGGLE SWITCHES ── */
+.toggle-row{display:inline-flex;align-items:center;gap:6px;font:700 .54rem "Space Mono",monospace;color:var(--muted);letter-spacing:.05em;cursor:pointer;white-space:nowrap;vertical-align:middle}
+.toggle-row:hover .toggle-switch:not(.on){border-color:var(--muted)}
+.toggle-switch{position:relative;width:30px;height:17px;border-radius:9px;background:var(--panel3);border:1px solid var(--line);cursor:pointer;transition:background .2s,border-color .2s;flex-shrink:0}
+.toggle-switch.on{background:var(--rex);border-color:var(--rex)}
+.toggle-switch::after{content:'';position:absolute;top:2px;left:2px;width:11px;height:11px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 2px rgba(0,0,0,.3)}
+.toggle-switch.on::after{transform:translateX(13px)}
+
+/* ── LOCK ASSETS ── */
+.lock-overlay{position:absolute;inset:0;background:rgba(9,10,15,.55);border-radius:8px;display:grid;place-items:center;pointer-events:none;z-index:2;transition:opacity .2s}
+.lock-overlay::after{content:'🔒';font-size:1.8rem;filter:grayscale(.3)}
+.upload-zone.locked{opacity:.6;filter:grayscale(.15);pointer-events:none}
+.upload-zone.locked input[type=file]{pointer-events:none}
+.lock-badge{display:inline-flex;align-items:center;gap:4px;font:700 .56rem "Space Mono",monospace;color:var(--ok);border:1px solid var(--ok-soft);background:var(--ok-soft);border-radius:4px;padding:2px 8px;margin-left:6px}
+
+/* ── RESPONSIVE ── */
+@media(max-width:820px){
+  body{overflow:auto}
+  .grid2,.avatars{grid-template-columns:1fr}
+  .studio{height:auto;grid-template-columns:1fr}
+  .side{min-height:180px}
+  .bg-upload-row{flex-direction:column}
+  .bg-zone{flex:none;width:100%}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- HEADER -->
+  <header class="hdr">
+    <div class="lights"><div class="light" style="background:var(--rex)"></div><div class="light" style="background:var(--lou)"></div></div>
+    <div class="brand">Rex &amp; Lou</div><div class="tag">SHORTS STUDIO</div>
+    <span id="hdrStatus" style="margin-left:auto;font-size:.72rem;color:var(--muted)"></span>
+  </header>
+
+  <!-- NAV -->
+  <nav class="tabs">
+    <button class="tab active" data-tab="0"><span>1</span>SETUP</button>
+    <button class="tab" data-tab="1"><span>2</span>SCRIPT</button>
+    <button class="tab" data-tab="2"><span>3</span>STUDIO</button>
+  </nav>
+
+  <!-- ═══════════════ PAGE 0: SETUP ═══════════════ -->
+  <section class="page active" id="page0"><div class="inner">
+    <h1 class="title">Set Up Your Short</h1>
+    <p class="sub">Upload characters, choose a background, and pick your voice engine.</p>
+
+    <!-- VOICE ENGINE -->
+    <div class="card" style="margin-bottom:18px;border-color:rgba(65,207,125,.22)">
+      <span class="pill ok">VOICE ENGINE</span>
+      <p class="sub" style="margin:8px 0 2px">Choose how your characters speak. Google TTS is free and works instantly.</p>
+      <div class="voice-tabs">
+        <button class="voice-tab active" data-engine="google">🌐 Edge TTS<small>Free · Male voices · No key</small></button>
+        <button class="voice-tab" data-engine="browser">🔊 Browser TTS<small>Free · Works offline</small></button>
+        <button class="voice-tab" data-engine="elevenlabs">🎙 ElevenLabs<small>Most human · Needs key</small></button>
+      </div>
+
+      <!-- Edge TTS config -->
+      <div class="voice-config active" id="cfg_google">
+        <div class="note ok small">🌐 <strong>Edge TTS (Microsoft)</strong> — Free neural voices, no API key needed. Real male voices for both characters. Audio is routed through the local proxy and captured directly into the recording!</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px">
+          <div class="field"><label class="label">REX Voice (adult man)</label>
+            <select id="googleRexLang">
+              <option value="en-GB-RyanNeural">🇬🇧 Ryan — British Male (deep, adult)</option>
+              <option value="en-US-ChristopherNeural">🇺🇸 Christopher — American Male (authority)</option>
+              <option value="en-GB-ThomasNeural">🇬🇧 Thomas — British Male (warm)</option>
+              <option value="en-US-EricNeural">🇺🇸 Eric — American Male (rational)</option>
+              <option value="en-US-SteffanNeural">🇺🇸 Steffan — American Male (deep)</option>
+              <option value="en-AU-WilliamMultilingualNeural">🇦🇺 William — Australian Male</option>
+            </select>
+          </div>
+          <div class="field"><label class="label">LOU Voice (younger)</label>
+            <select id="googleLouLang">
+              <option value="en-US-GuyNeural">🇺🇸 Guy — American Male (younger, passionate)</option>
+              <option value="en-US-BrianNeural">🇺🇸 Brian — American Male (casual, young)</option>
+              <option value="en-US-RogerNeural">🇺🇸 Roger — American Male (lively)</option>
+              <option value="en-IE-ConnorNeural">🇮🇪 Connor — Irish Male</option>
+              <option value="en-CA-LiamNeural">🇨🇦 Liam — Canadian Male</option>
+            </select>
+          </div>
+        </div>
+        <div class="actions"><button class="btn small primary" id="googleRexPreview">▶ Test Rex</button><button class="btn small" id="googleLouPreview">▶ Test Lou</button></div>
+      </div>
+
+      <!-- Browser TTS config -->
+      <div class="voice-config" id="cfg_browser">
+        <div class="note info small">🔊 <strong>Browser TTS</strong> — Uses your device's built-in voices. Quality varies. Note: Browser TTS audio is not captured in recordings (use Google TTS or ElevenLabs for baked-in audio).</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="field"><label class="label">REX Voice</label><select id="browserRexVoice"></select></div>
+          <div class="field"><label class="label">LOU Voice</label><select id="browserLouVoice"></select></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="field"><label class="label">REX Pitch <span id="rexPitchVal">0.82</span> · Speed <span id="rexRateVal">0.93</span></label>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+              <input id="rexPitch" type="range" min="0.5" max="2" step="0.05" value="0.82" style="width:100%;accent-color:var(--rex)">
+              <input id="rexRate" type="range" min="0.6" max="1.5" step="0.05" value="0.93" style="width:100%;accent-color:var(--rex)">
+            </div>
+          </div>
+          <div class="field"><label class="label">LOU Pitch <span id="louPitchVal">1.15</span> · Speed <span id="louRateVal">1.05</span></label>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+              <input id="louPitch" type="range" min="0.5" max="2" step="0.05" value="1.15" style="width:100%;accent-color:var(--lou)">
+              <input id="louRate" type="range" min="0.6" max="1.5" step="0.05" value="1.05" style="width:100%;accent-color:var(--lou)">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ElevenLabs config -->
+      <div class="voice-config" id="cfg_elevenlabs">
+        <div class="note free small">🎙 <strong>ElevenLabs</strong> — Most human-sounding voices. <strong>Audio IS captured in recordings!</strong> Free tier = 10k chars/month. <a href="https://elevenlabs.io/sign-up" target="_blank" rel="noopener">Get free API key →</a></div>
+        <div class="field"><label class="label">ElevenLabs API Key</label>
+          <div style="display:flex;gap:6px">
+            <input id="elApiKey" type="password" placeholder="sk_... paste your key" style="flex:1">
+            <button class="btn small ok" id="elSaveKey">Save</button>
+            <button class="btn small" id="elTestKey">Test</button>
+          </div>
+          <div class="status" id="elKeyStatus" style="margin-top:4px;min-height:16px"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="field"><label class="label">REX Voice ID</label><input id="elRexVoiceId" value="pNInz6obpgDQGcFmaJgB" placeholder="Voice ID"></div>
+          <div class="field"><label class="label">LOU Voice ID</label><input id="elLouVoiceId" value="onwK4e9ZLuTAKqWW03F9" placeholder="Voice ID"></div>
+        </div>
+        <div class="actions"><button class="btn small primary" id="elRexPreview">▶ Test Rex</button><button class="btn small" id="elLouPreview">▶ Test Lou</button></div>
+      </div>
+
+      <!-- Claude API key -->
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line)">
+        <span class="label">Optional: Claude API key for AI script generation</span>
+        <div style="display:flex;gap:6px;margin-top:6px">
+          <input id="claudeApiKey" type="password" placeholder="sk-ant-... (optional)" style="flex:1;border:1px solid var(--line);border-radius:7px;background:#0e1016;color:var(--text);padding:8px 10px;font-size:.82rem">
+          <button class="btn small" id="saveClaudeKey">Save</button>
+          <button class="btn small" id="testClaudeKey">Test</button>
+        </div>
+        <div class="status" id="claudeStatus" style="margin-top:4px">No key needed for voices — only for AI script generation.</div>
+      </div>
+    </div>
+
+    <!-- CHARACTERS -->
+    <div class="note ok small" style="margin-bottom:12px">💡 <strong>Best results:</strong> Remove backgrounds first using <a href="https://www.remove.bg" target="_blank" rel="noopener">remove.bg</a> (free), then upload transparent PNGs. Background removal is <strong>off by default</strong> — uncheck below only if your image has a clean solid-color background.</div>
+    <div class="grid2">
+      <div class="card rex">
+        <span class="pill re">CHARACTER A — REX</span>
+        <label style="display:flex;align-items:center;gap:5px;margin-top:6px;font-size:.72rem;color:var(--muted);cursor:pointer">
+          <input type="checkbox" id="skipBgRemRex" checked style="accent-color:var(--rex);width:14px;height:14px;cursor:pointer"> Skip background removal
+        </label>
+        <div class="upload-zone char-zone" style="margin-top:10px" id="rexZone">
+          <input id="rexFile" type="file" accept="image/*">
+          <div class="hint" id="rexHint"><strong>Upload Rex</strong>Transparent PNG — use remove.bg first</div>
+        </div>
+        <div class="bg-rem-note" id="rexRemNote">⚡ Removing background…</div>
+        <div class="field"><label class="label" for="rexName">Display Name</label><input id="rexName" value="Rex"></div>
+      </div>
+      <div class="card lou">
+        <span class="pill lo">CHARACTER B — LOU</span>
+        <label style="display:flex;align-items:center;gap:5px;margin-top:6px;font-size:.72rem;color:var(--muted);cursor:pointer">
+          <input type="checkbox" id="skipBgRemLou" checked style="accent-color:var(--lou);width:14px;height:14px;cursor:pointer"> Skip background removal
+        </label>
+        <div class="upload-zone char-zone" style="margin-top:10px" id="louZone">
+          <input id="louFile" type="file" accept="image/*">
+          <div class="hint" id="louHint"><strong>Upload Lou</strong>Transparent PNG — use remove.bg first</div>
+        </div>
+        <div class="bg-rem-note" id="louRemNote">⚡ Removing background…</div>
+        <div class="field"><label class="label" for="louName">Display Name</label><input id="louName" value="Lou"></div>
+      </div>
+    </div>
+
+    <!-- BACKGROUND -->
+    <div style="margin-top:18px">
+      <label class="label">Background Video or Image</label>
+      <div class="bg-upload-row">
+        <div class="upload-zone bg-zone" id="bgZone">
+          <input id="bgFile" type="file" accept="image/*,video/*">
+          <div class="hint" id="bgHint"><strong>Upload BG</strong>Video or image</div>
+        </div>
+        <div class="bg-preview-box" id="bgPreviewBox">
+          <span class="bg-preview-label">BACKGROUND PREVIEW</span>
+          <canvas id="bgPreviewCanvas"></canvas>
+        </div>
+      </div>
+    </div>
+    <!-- LOCK ASSETS -->
+    <div class="card" style="margin-top:18px;border-color:rgba(65,207,125,.22)">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+        <div>
+          <span class="pill ok">LOCK ASSETS</span>
+          <p class="status" style="margin-top:4px;max-width:500px">Lock character images and background to prevent accidental changes. Locked assets stay saved with your project.</p>
+        </div>
+        <button class="btn small primary" id="lockAssetsBtn">🔒 Lock Assets</button>
+      </div>
+      <div class="status" id="lockStatus" style="margin-top:6px;min-height:16px"></div>
+    </div>
+
+    <div class="actions"><button class="btn primary" data-next="1">Next: Write Script →</button></div>
+  </div></section>
+
+  <!-- ═══════════════ PAGE 1: SCRIPT ═══════════════ -->
+  <section class="page" id="page1"><div class="inner">
+    <h1 class="title">Write the Script</h1>
+    <p class="sub">Enter a topic and talking points. The AI writes a natural back-and-forth — hook first, value throughout, punchy ending.</p>
+    <div class="note ok small">
+      <strong>Style:</strong> Line 1 = instant hook. Rex drops facts. Lou reacts like the viewer — shocked, curious, relatable. Every line earns the next.
+    </div>
+    <div class="avatars">
+      <div class="avatarRow"><div class="av" id="rexAv">R</div><div><strong id="rexLabel">Rex</strong><div class="status">Explains · informs · drops the facts</div></div></div>
+      <div class="avatarRow"><div class="av lou" id="louAv">L</div><div><strong id="louLabel" style="color:var(--lou)">Lou</strong><div class="status">Reacts · questions · speaks for the viewer</div></div></div>
+    </div>
+    <div class="field"><label class="label" for="topicInput">Video Topic</label><input id="topicInput" placeholder="e.g. LG suitcase TV, PS5 Pro, AirPods Max"></div>
+    <div class="field"><label class="label" for="notesInput">Talking Points / Notes</label><textarea id="notesInput" placeholder="Paste specs, prices, opinions, bullet points. The more detail, the better the script."></textarea></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+      <div class="field">
+        <label class="label" for="toneSelect">Tone</label>
+        <select id="toneSelect">
+          <option value="funny">Funny &amp; Casual</option>
+          <option value="hype">Hyped &amp; Energetic</option>
+          <option value="informative">Clear &amp; Informative</option>
+          <option value="debate">Debate / Disagree</option>
+          <option value="shocked">Shocked &amp; Amazed</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="label" for="lineCountSelect">Length</label>
+        <select id="lineCountSelect">
+          <option value="6">6 lines (~30s)</option>
+          <option value="8" selected>8 lines (~45s)</option>
+          <option value="10">10 lines (~60s)</option>
+          <option value="14">14 lines (~90s)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="label" for="voiceOverride">Voice Engine</label>
+        <select id="voiceOverride" onchange="state.voiceEngine=this.value">
+          <option value="">Use Setup choice</option>
+          <option value="google">Google TTS</option>
+          <option value="browser">Browser TTS</option>
+          <option value="elevenlabs">ElevenLabs</option>
+        </select>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn primary" id="generateBtn">✨ Generate Script</button>
+      <button class="btn" id="sampleBtn">Load Sample</button>
+      <span class="status" id="scriptStatus"></span>
+    </div>
+    <div class="progress-bar" id="genProgress" style="display:none"><div class="progress-fill" id="genProgressFill" style="width:0%"></div></div>
+    <div class="lines" id="scriptList"></div>
+    <div class="actions" id="scriptActions" style="display:none">
+      <button class="btn ok" data-next="2">Open in Studio →</button>
+      <button class="btn" id="regenBtn">↻ Regenerate</button>
+    </div>
+  </div></section>
+
+  <!-- ═══════════════ PAGE 2: STUDIO ═══════════════ -->
+  <section class="page" id="page2">
+    <div class="studio">
+      <!-- LEFT: Dialogue + Recording -->
+      <aside class="side">
+        <div class="sideHead">DIALOGUE <span id="lineCount" style="margin-left:auto">0 lines</span></div>
+        <div class="scroll" id="dialogueList"></div>
+        <div class="controls">
+          <div class="sceneBox">
+            <div class="sceneTop">
+              <label class="label" style="margin:0">Playback</label>
+              <select class="playbackMode"><option value="all">All scenes</option><option value="selected">Selected</option></select>
+              <button class="btn small selectAllScenes">All</button>
+              <button class="btn small clearScenes">None</button>
+            </div>
+            <div class="sceneChips" id="sceneChipsStudio"></div>
+            <div class="status" id="sceneSummary" style="margin-top:3px"></div>
+          </div>            <div class="rec-panel">
+            <div style="font:700 .58rem 'Space Mono',monospace;color:#ff8080;letter-spacing:.06em;margin-bottom:7px;display:flex;align-items:center;gap:6px">
+              <span class="rec-dot off" id="recDot"></span>RECORD &amp; DOWNLOAD
+            </div>
+            <div class="progress-bar" id="recProgress" style="display:none"><div class="progress-fill" id="recProgressFill" style="width:0%"></div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:5px">
+              <button class="btn small primary" id="startRecordBtn">⏺ Record</button>
+              <button class="btn small" id="stopRecordBtn" disabled>⏹ Stop &amp; Save</button>
+            </div>
+            <span class="status" id="recStatus" style="font-size:.72rem;min-height:16px;display:block"></span>
+
+          </div>
+          <button class="btn primary" id="previewAllBtn" style="width:100%">▶ Preview All</button>
+          <span class="status" id="previewStatus" style="width:100%;text-align:center"></span>
+        </div>
+      </aside>
+
+      <!-- CENTER: Canvas -->
+      <main class="center">
+        <div class="stage">
+          <div class="phone">
+            <div class="phoneTop"><div class="dot"></div></div>
+            <div class="screen"><canvas id="previewCanvas"></canvas></div>
+            <div class="phoneBot"><div class="home"></div></div>
+          </div>
+        </div>
+        <div class="controls">
+          <button class="btn small" id="prevBtn">◀</button>
+          <span class="status" style="font-family:'Space Mono',monospace" id="sceneCount">0 / 0</span>
+          <button class="btn small" id="nextBtn">▶</button>
+          <button class="btn small primary" id="playBtn">▶ Play</button>
+          <select id="subStyle" style="padding:5px 7px;border:1px solid var(--line);border-radius:6px;background:#0e1016;color:var(--text);font-size:.73rem">
+            <option value="word">Word highlight</option>
+            <option value="block">Block caption</option>
+          </select>
+          <label class="toggle-row" id="toggleFadeRow"><span class="toggle-switch on" id="toggleFadeSw"></span>Image Fade</label>
+          <label class="toggle-row" id="toggleMotionRow"><span class="toggle-switch on" id="toggleMotionSw"></span>Char Motion</label>
+          <div class="toolrow">
+            <label>LAYER<select id="editLayer"><option value="character">Character</option><option value="subtitle">Subtitle</option><option value="media">Media</option></select></label>
+            <label>TEXT<input id="textScale" type="range" min="55" max="135" value="100"></label>
+            <label>CHAR<input id="charScale" type="range" min="45" max="120" value="100"></label>
+            <label>MEDIA<input id="mediaScale" type="range" min="18" max="120" value="62"></label>
+            <button class="btn small" id="resetLayoutBtn">Reset</button>
+          </div>
+          <div class="posGrid" id="posGrid">
+            <button class="pos" data-pos="top-left">TL</button><button class="pos active" data-pos="top-center">TC</button><button class="pos" data-pos="top-right">TR</button>
+            <button class="pos" data-pos="mid-left">ML</button><button class="pos" data-pos="mid-center">MC</button><button class="pos" data-pos="mid-right">MR</button>
+            <button class="pos" data-pos="bot-left">BL</button><button class="pos" data-pos="bot-center">BC</button><button class="pos" data-pos="bot-right">BR</button>
+          </div>
+        </div>
+      </main>
+
+      <!-- RIGHT: Media -->
+      <aside class="side right">
+        <div class="sideHead">MEDIA <span style="margin-left:auto;font-size:.53rem;color:var(--muted)">drag canvas</span></div>
+        <div class="scroll">
+          <div class="mediaUrlRow"><input id="imageUrlInput" type="url" placeholder="Paste image URL"><button class="btn small" id="addImageUrlBtn">Add</button></div>
+          <input id="overlayFile" type="file" accept="image/*" style="width:100%;margin-bottom:6px;color:var(--muted);font-size:.72rem">
+          <div class="mediaTabs">
+            <button class="mediaTab active" data-mtab="uploaded">Uploaded</button>
+            <button class="mediaTab" data-mtab="search">Search</button>
+            <button class="mediaTab" data-mtab="research">🔍 Research</button>
+          </div>
+          <div id="mediaTabResearch" style="display:none">
+            <div class="researchNote">🤖 <strong>AI Media Research</strong> — Automatically finds product images, screenshots, and visuals for each scene. Searches trusted sources for pricing, specs, features, and comparisons mentioned in the script.</div>
+            <div class="researchActions">
+              <button class="btn small primary" id="autoResearchBtn">🔍 Research All Scenes</button>
+              <button class="btn small" id="clearResearchBtn">Clear</button>
+            </div>
+            <div class="status" id="researchStatus" style="font-size:.72rem;margin-bottom:6px"></div>
+            <div id="researchResults"></div>
+          </div>
+          <div id="mediaTabSearch" style="display:none">
+            <div style="display:flex;gap:4px;margin-bottom:6px">
+              <input id="mediaSearchInput" placeholder="Search images…" style="flex:1;border:1px solid var(--line);border-radius:6px;background:#0e1016;color:var(--text);padding:5px 7px;font-size:.72rem" onkeydown="if(event.key==='Enter')searchUnsplash()">
+              <button class="btn small" id="mediaSearchBtn">Go</button>
+            </div>
+            <div class="searchResults" id="searchResults"></div>
+            <div class="status" id="mediaSearchStatus"></div>
+          </div>
+          <div id="mediaTabUploaded">
+            <div id="mediaList"></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════════════
+   REX & LOU STUDIO — MERGED v4.0
+   JavaScript Application
+   ═══════════════════════════════════════════════════════════════════════════ */
+"use strict";
+const $ = (s,r=document)=>r.querySelector(s);
+const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
+const STORE = "rlx_v4";
+
+const state = {
+  tab:0, scene:0, script:[], topic:"",
+  subPos:"bottom-center", subCustom:null,
+  playbackMode:"all", selectedScenes:new Set(),
+  playing:false, wordTimer:0, raf:0,
+  chars:{Rex:null,Lou:null},
+  bg:null, bgVideoEl:null,
+  mediaLayers:{}, selectedMediaId:null, mediaDefaultSize:.62,
+  editLayer:"character", textScale:1, charScale:1,
+  charPos:{Rex:null,Lou:null},
+  hit:{sub:null,chars:{},media:[]}, drag:null,
+  voiceEngine:"google",
+  isRecording:false,
+  elApiKey:"", claudeApiKey:"",
+  voiceSettings:{Rex:{voiceName:"",pitch:0.82,rate:0.93},Lou:{voiceName:"",pitch:1.15,rate:1.05}},
+  elVoiceIds:{Rex:"pNInz6obpgDQGcFmaJgB",Lou:"onwK4e9ZLuTAKqWW03F9"},
+  assetsLocked:false,
+  imageFade:true,
+  charMotion:true,
+  fadeState:{lastSpeaker:null,transitionStart:0,duration:350,prevSpeaker:null,prevBox:null},
+};
+
+/* ── INIT ── */
+window.addEventListener("DOMContentLoaded", async ()=>{
+  bind(); loadStored(); await loadBrowserVoices();
+  resizeCanvases(); renderAll(); startLoops();
+  window.addEventListener("resize",()=>{resizeCanvases();renderAll();});
+});
+
+function bind(){
+  $$(".tab").forEach(b=>b.addEventListener("click",()=>goTo(+b.dataset.tab)));
+  $$("[data-next]").forEach(b=>b.addEventListener("click",()=>goTo(+b.dataset.next)));
+
+  // Voice engine tabs
+  $$(".voice-tab").forEach(btn=>btn.addEventListener("click",()=>{
+    state.voiceEngine=btn.dataset.engine;
+    $$(".voice-tab").forEach(b=>b.classList.toggle("active",b===btn));
+    $$(".voice-config").forEach(c=>c.classList.toggle("active",c.id==="cfg_"+btn.dataset.engine));
+    try{localStorage.setItem(STORE+"_engine",state.voiceEngine);}catch(e){}
+  }));
+
+  // Google TTS voice selectors
+  $("#googleRexLang").addEventListener("change",()=>{try{localStorage.setItem(STORE+"_gRexLang",$("#googleRexLang").value);}catch(e){}});
+  $("#googleLouLang").addEventListener("change",()=>{try{localStorage.setItem(STORE+"_gLouLang",$("#googleLouLang").value);}catch(e){}});
+  $("#googleRexPreview").addEventListener("click",()=>{previewVoice("Rex");});
+  $("#googleLouPreview").addEventListener("click",()=>{previewVoice("Lou");});
+
+  // ElevenLabs
+  $("#elSaveKey").addEventListener("click",()=>{state.elApiKey=$("#elApiKey").value.trim();try{localStorage.setItem(STORE+"_elkey",state.elApiKey);}catch(e){}$("#elKeyStatus").textContent="✓ Saved.";});
+  $("#elTestKey").addEventListener("click",async()=>{
+    const k=state.elApiKey||$("#elApiKey").value.trim();
+    if(!k){$("#elKeyStatus").textContent="Enter a key first.";return;}
+    $("#elKeyStatus").innerHTML='<span class="spinner"></span>Testing...';
+    try{const r=await fetch("https://api.elevenlabs.io/v1/voices",{headers:{"xi-api-key":k}});
+      if(r.ok){state.elApiKey=k;try{localStorage.setItem(STORE+"_elkey",k);}catch(e){}$("#elKeyStatus").textContent="✓ Key works!";}
+      else{const d=await r.json();$("#elKeyStatus").textContent="✗ "+(d.detail?.message||r.status);}
+    }catch(e){$("#elKeyStatus").textContent="✗ Network error";}
+  });
+  // Persist ElevenLabs voice IDs
+  $("#elRexVoiceId").addEventListener("change",()=>{state.elVoiceIds.Rex=$("#elRexVoiceId").value;try{localStorage.setItem(STORE+"_elRexVid",state.elVoiceIds.Rex);}catch(e){}});
+  $("#elLouVoiceId").addEventListener("change",()=>{state.elVoiceIds.Lou=$("#elLouVoiceId").value;try{localStorage.setItem(STORE+"_elLouVid",state.elVoiceIds.Lou);}catch(e){}});
+  $("#elRexPreview").addEventListener("click",()=>previewVoice("Rex"));
+  $("#elLouPreview").addEventListener("click",()=>previewVoice("Lou"));
+
+  // Claude key
+  $("#saveClaudeKey").addEventListener("click",()=>{state.claudeApiKey=$("#claudeApiKey").value.trim();try{localStorage.setItem(STORE+"_claudekey",state.claudeApiKey);}catch(e){}$("#claudeStatus").textContent="✓ Saved.";});
+  $("#testClaudeKey").addEventListener("click",testClaudeKey);
+
+  // File uploads
+  function bindFile(id,fn){
+    const el=$("#"+id);el.addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;fn(f);setTimeout(()=>{try{el.value="";}catch(e2){}},0);});
+  }
+  bindFile("rexFile",f=>uploadChar("Rex",f));
+  bindFile("louFile",f=>uploadChar("Lou",f));
+  bindFile("bgFile",f=>uploadBg(f));
+
+  $("#rexName").addEventListener("input",updateNames);
+  $("#louName").addEventListener("input",updateNames);
+
+  // Browser voice settings
+  ["rex","lou"].forEach(c=>{
+    const C=c[0].toUpperCase()+c.slice(1);
+    const sel=$("#browser"+C+"Voice");if(!sel)return;
+    sel.addEventListener("change",()=>{state.voiceSettings[C].voiceName=sel.value;});
+    const pitch=$("#"+c+"Pitch"),rate=$("#"+c+"Rate");
+    if(pitch)pitch.addEventListener("input",e=>{state.voiceSettings[C].pitch=+e.target.value;$("#"+c+"PitchVal").textContent=e.target.value;});
+    if(rate)rate.addEventListener("input",e=>{state.voiceSettings[C].rate=+e.target.value;$("#"+c+"RateVal").textContent=e.target.value;});
+  });
+
+  // Script
+  $("#generateBtn").addEventListener("click",generateScript);
+  $("#regenBtn").addEventListener("click",generateScript);
+  $("#sampleBtn").addEventListener("click",useSample);
+
+  // Studio
+  $("#previewAllBtn").addEventListener("click",previewAll);
+  $("#playBtn").addEventListener("click",playOrStop);
+  $("#prevBtn").addEventListener("click",()=>moveScene(-1));
+  $("#nextBtn").addEventListener("click",()=>moveScene(1));
+  $("#subStyle").addEventListener("change",renderAll);
+  $("#editLayer").addEventListener("change",e=>{state.editLayer=e.target.value;});
+  $("#textScale").addEventListener("input",e=>{state.textScale=+e.target.value/100;renderAll();});
+  $("#charScale").addEventListener("input",e=>{state.charScale=+e.target.value/100;renderAll();});
+  $("#mediaScale").addEventListener("input",e=>resizeSelectedMedia(+e.target.value/100));
+  $("#resetLayoutBtn").addEventListener("click",resetLayout);
+  bindCanvasDrag();
+  $("#posGrid").addEventListener("click",e=>{const b=e.target.closest(".pos");if(!b)return;applyPositionButton(b.dataset.pos);$$(".pos").forEach(x=>x.classList.toggle("active",x===b));renderAll();});
+  $("#overlayFile").addEventListener("change",e=>uploadOverlay(e.target.files[0]));
+  $("#addImageUrlBtn").addEventListener("click",addImageFromUrl);
+  $("#imageUrlInput").addEventListener("keydown",e=>{if(e.key==="Enter")addImageFromUrl();});
+  $("#mediaSearchBtn").addEventListener("click",searchUnsplash);
+
+  // Media tabs
+  $$(".mediaTab").forEach(b=>b.addEventListener("click",()=>{
+    $$(".mediaTab").forEach(x=>x.classList.toggle("active",x===b));
+    $("#mediaTabSearch").style.display=b.dataset.mtab==="search"?"block":"none";
+    $("#mediaTabUploaded").style.display=b.dataset.mtab==="uploaded"?"block":"none";
+    $("#mediaTabResearch").style.display=b.dataset.mtab==="research"?"block":"none";
+  }));
+
+  // Research buttons
+  $("#autoResearchBtn").addEventListener("click",autoResearchAll);
+  $("#clearResearchBtn").addEventListener("click",clearResearch);
+
+  // Recording
+  $("#startRecordBtn").addEventListener("click",startRecording);
+  $("#stopRecordBtn").addEventListener("click",stopRecording);
+
+  // Scene chips
+  document.addEventListener("click",e=>{
+    const chip=e.target.closest(".sceneChip");if(!chip)return;
+    const i=+chip.dataset.sceneIdx;
+    if(state.selectedScenes.has(i))state.selectedScenes.delete(i);else state.selectedScenes.add(i);
+    if(state.selectedScenes.size)state.playbackMode="selected";
+    updateSceneSelectors();
+  });
+  document.addEventListener("click",e=>{
+    if(e.target.closest(".selectAllScenes")){state.selectedScenes=new Set(state.script.map((_,i)=>i));state.playbackMode="all";updateSceneSelectors();}
+    if(e.target.closest(".clearScenes")){state.selectedScenes.clear();state.playbackMode="selected";updateSceneSelectors();}
+  });
+  $$(".playbackMode").forEach(s=>s.addEventListener("change",e=>{state.playbackMode=e.target.value;updateSceneSelectors();}));
+
+  // Lock assets (async — video may be saving to IndexedDB)
+  let _locking=false;
+  $("#lockAssetsBtn").addEventListener("click",async()=>{if(_locking)return;if(state.assetsLocked){unlockAssets();return;}_locking=true;await lockAssets();_locking=false;});
+
+  // Fade effects toggle
+  $("#toggleFadeRow").addEventListener("click",()=>{state.imageFade=!state.imageFade;updateFadeToggle();try{localStorage.setItem(STORE+"_imageFade",state.imageFade?"1":"0");}catch(e){}});
+
+  // Character motion toggle
+  $("#toggleMotionRow").addEventListener("click",()=>{state.charMotion=!state.charMotion;updateMotionToggle();try{localStorage.setItem(STORE+"_charMotion",state.charMotion?"1":"0");}catch(e){}});
+}
+
+/* ── NAVIGATION ── */
+function goTo(i){
+  state.tab=i;
+  $$(".page").forEach((p,idx)=>p.classList.toggle("active",idx===i));
+  $$(".tab").forEach((t,idx)=>{t.classList.toggle("active",idx===i);t.classList.toggle("done",idx<i);});
+  if(i===2)buildStudio();
+  state.fadeState={lastSpeaker:null,transitionStart:0,duration:350,prevSpeaker:null,prevBox:null};
+  resizeCanvases();updateSceneSelectors();renderAll();
+}
+
+/* ── BACKGROUND REMOVAL (Flood-fill from borders) ── */
+function removeBackground(img,callback){
+  const MAX=800;
+  let W=img.naturalWidth||img.width,H=img.naturalHeight||img.height;
+  if(W>MAX){const s=MAX/W;W=MAX;H=Math.round(H*s);}
+  const c=document.createElement("canvas");c.width=W;c.height=H;
+  const ctx=c.getContext("2d");ctx.drawImage(img,0,0,W,H);
+  const data=ctx.getImageData(0,0,W,H);const px=data.data;
+  const get=(x,y)=>{const i=(y*W+x)*4;return[px[i],px[i+1],px[i+2]];};
+  const distSq=(r1,g1,b1,r2,g2,b2)=>(r1-r2)**2+(g1-g2)**2+(b1-b2)**2;
+
+  // Sample background from all 4 borders
+  const bgColors=[];
+  const step=Math.max(3,Math.floor(Math.min(W,H)/22));
+  for(let x=0;x<W;x+=step){bgColors.push(get(x,0),get(x,1));bgColors.push(get(x,H-2),get(x,H-1));}
+  for(let y=0;y<H;y+=step){bgColors.push(get(0,y),get(1,y));bgColors.push(get(W-2,y),get(W-1,y));}
+  bgColors.push(get(0,0),get(W-1,0),get(0,H-1),get(W-1,H-1));
+
+  // Helper: is this pixel a "background candidate" (close to any sampled border color)?
+  const THRESH_SQ=35*35;
+  const isBgCandidate=(x,y)=>{
+    const i=(y*W+x)*4;const r=px[i],g=px[i+1],b=px[i+2];
+    for(let ci=0;ci<bgColors.length;ci++){
+      if(distSq(r,g,b,bgColors[ci][0],bgColors[ci][1],bgColors[ci][2])<THRESH_SQ)return true;
+    }
+    return false;
+  };
+
+  // Flood-fill from border: only remove pixels physically connected to an edge
+  const visited=new Uint8Array(W*H); // 0=unvisited bg-candidate, 1=visited/removed, 2=foreground (skip)
+  const queue=[];let qh=0;
+  const idx=(x,y)=>y*W+x;
+  const enqueue=(x,y)=>{
+    if(x<0||x>=W||y<0||y>=H)return;
+    const i=idx(x,y);
+    if(visited[i]!==0)return; // already processed
+    if(!isBgCandidate(x,y)){visited[i]=2;return;} // not background → leave alone
+    visited[i]=1;queue.push(x,y);
+  };
+
+  // Seed queue from all 4 edges
+  for(let x=0;x<W;x++){enqueue(x,0);enqueue(x,H-1);}
+  for(let y=0;y<H;y++){enqueue(0,y);enqueue(W-1,y);}
+
+  // BFS flood-fill
+  while(qh<queue.length){
+    const cx=queue[qh++],cy=queue[qh++];
+    enqueue(cx-1,cy);enqueue(cx+1,cy);enqueue(cx,cy-1);enqueue(cx,cy+1);
+  }
+
+  // Apply: make all flood-filled pixels fully transparent, leave everything else alone
+  for(let y=0;y<H;y++){
+    for(let x=0;x<W;x++){
+      if(visited[idx(x,y)]===1)px[((y*W+x)*4)+3]=0; // fully transparent
+      // else: leave alpha as-is (foreground stays opaque)
+    }
+  }
+
+  ctx.putImageData(data,0,0);
+  const r=new Image();r.onload=()=>callback(r);r.src=c.toDataURL("image/png");
+}
+
+/* ── LOCK ASSETS ── */
+async function lockAssets(){
+  if(!state.chars.Rex&&!state.chars.Lou&&!state.bg){$("#lockStatus").textContent="Upload at least one asset first.";return;}
+  state.assetsLocked=true;
+  $("#lockStatus").innerHTML='<span class="spinner"></span>Compressing &amp; saving…';
+  const save={};
+  // Compress character images before saving to reduce base64 size
+  if(state.chars.Rex?.complete){save.rexSrc=compressImageForStorage(state.chars.Rex);}
+  if(state.chars.Lou?.complete){save.louSrc=compressImageForStorage(state.chars.Lou);}
+  // Save background: images to localStorage, videos to IndexedDB
+  if(state.bg?.type==="image"){save.bgSrc=compressImageForStorage(state.bg.el);}
+  if(state.bg?.type==="video"){
+    save.bgType="video";
+    try{
+      const blob=state._bgBlobUrl?await fetch(state._bgBlobUrl).then(r=>r.blob()):null;
+      if(blob){await _saveVideoToIDB(blob);save._hasVideo=true;}
+    }catch(e){console.warn("Could not save video to IndexedDB:",e);}
+  }
+
+  try{
+    const json=JSON.stringify(save);
+    localStorage.setItem(STORE+"_lockedAssets",json);
+    localStorage.setItem(STORE+"_assetsLocked","1");
+  }catch(e){
+    console.warn("Could not save locked assets:",e);
+    state.assetsLocked=false;
+    updateLockUI();
+    if(e.name==="QuotaExceededError"){$("#lockStatus").textContent="⚠ Assets too large — use smaller images (< 800px).";}
+    else{$("#lockStatus").textContent="⚠ Could not save — try again.";}
+    return;
+  }
+  updateLockUI();
+  const hasVideo=save._hasVideo;
+  $("#lockStatus").textContent="✓ Assets locked"+(hasVideo?" (video saved)":"")+".";
+}
+
+function unlockAssets(){
+  state.assetsLocked=false;
+  try{localStorage.setItem(STORE+"_assetsLocked","0");localStorage.removeItem(STORE+"_lockedBgVideo");}catch(e){}
+  _deleteVideoFromIDB(); // clean up saved video
+  updateLockUI();
+  $("#lockStatus").textContent="🔓 Unlocked — you can now change assets.";
+}
+
+function updateLockUI(){
+  const btn=$("#lockAssetsBtn");
+  if(state.assetsLocked){
+    btn.textContent="🔓 Unlock / Change Assets";
+    btn.classList.add("danger");btn.classList.remove("primary");
+    $("#rexFile").disabled=true;$("#rexZone").classList.add("locked");
+    $("#louFile").disabled=true;$("#louZone").classList.add("locked");
+    $("#bgFile").disabled=true;$("#bgZone").classList.add("locked");
+  }else{
+    btn.textContent="🔒 Lock Assets";
+    btn.classList.remove("danger");btn.classList.add("primary");
+    $("#rexFile").disabled=false;$("#rexZone").classList.remove("locked");
+    $("#louFile").disabled=false;$("#louZone").classList.remove("locked");
+    $("#bgFile").disabled=false;$("#bgZone").classList.remove("locked");
+  }
+}
+
+async function restoreLockedAssets(){
+  try{
+    const raw=localStorage.getItem(STORE+"_lockedAssets");
+    if(!raw)return;
+    const save=JSON.parse(raw);
+    // Restore Rex
+    if(save.rexSrc){
+      const img=await loadBase64Image(save.rexSrc);
+      if(img){state.chars.Rex=img;
+        const zone=$("#rexZone");zone.querySelector(".hint").style.display="none";
+        const exist=zone.querySelector(".preview-img");if(exist)exist.remove();
+        const pv=document.createElement("img");pv.className="preview-img";pv.src=save.rexSrc;zone.appendChild(pv);
+      }
+    }
+    // Restore Lou
+    if(save.louSrc){
+      const img=await loadBase64Image(save.louSrc);
+      if(img){state.chars.Lou=img;
+        const zone=$("#louZone");zone.querySelector(".hint").style.display="none";
+        const exist=zone.querySelector(".preview-img");if(exist)exist.remove();
+        const pv=document.createElement("img");pv.className="preview-img";pv.src=save.louSrc;zone.appendChild(pv);
+      }
+    }
+    // Restore background image
+    if(save.bgType==="image"&&save.bgSrc){
+      const img=await loadBase64Image(save.bgSrc);
+      if(img){state.bg={type:"image",el:img};showBgPreviewBox();}
+    }else if(save.bgType==="video"){
+      // Load video from IndexedDB
+      const vidBlob=await _loadVideoFromIDB();
+      if(vidBlob){
+        const blobUrl=URL.createObjectURL(vidBlob);state._bgBlobUrl=blobUrl;
+        const v=document.createElement("video");v.muted=true;v.loop=true;v.playsInline=true;
+        v.style.cssText="position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none";
+        document.body.appendChild(v);state.bgVideoEl=v;
+        await new Promise(res=>{let done=false;const fin=ok=>{if(!done){done=true;res(ok);}};v.addEventListener("canplay",()=>fin(true),{once:true});v.addEventListener("error",()=>fin(false),{once:true});setTimeout(()=>fin(false),15000);v.src=blobUrl;v.load();});
+        v.play().catch(()=>{});
+        state.bg={type:"video",el:v};showBgPreviewBox();
+      }else{
+        $("#lockStatus").textContent="✓ Character images restored — re-upload background video.";
+      }
+    }
+    updateNames();renderAll();
+  }catch(e){console.warn("Could not restore locked assets:",e);}
+}
+
+function loadBase64Image(src){
+  return new Promise((res)=>{
+    const img=new Image();
+    img.onload=()=>res(img);
+    img.onerror=()=>res(null);
+    img.src=src;
+  });
+}
+
+/* ── IndexedDB helpers for background video persistence ── */
+function _openVidDB(){
+  return new Promise((res,rej)=>{
+    const req=indexedDB.open("rlx_v4_video",1);
+    req.onupgradeneeded=()=>{req.result.createObjectStore("videos");};
+    req.onsuccess=()=>res(req.result);
+    req.onerror=()=>rej(req.error);
+  });
+}
+async function _saveVideoToIDB(blob){
+  const db=await _openVidDB();
+  return new Promise((res,rej)=>{
+    const tx=db.transaction("videos","readwrite");
+    tx.objectStore("videos").put(blob,"bgVideo");
+    tx.oncomplete=()=>{db.close();res();};
+    tx.onerror=()=>{db.close();rej(tx.error);};
+  });
+}
+async function _loadVideoFromIDB(){
+  const db=await _openVidDB();
+  return new Promise((res,rej)=>{
+    const tx=db.transaction("videos","readonly");
+    const req=tx.objectStore("videos").get("bgVideo");
+    req.onsuccess=()=>{db.close();res(req.result||null);};
+    req.onerror=()=>{db.close();rej(req.error);};
+  });
+}
+async function _deleteVideoFromIDB(){
+  try{const db=await _openVidDB();const tx=db.transaction("videos","readwrite");tx.objectStore("videos").delete("bgVideo");await new Promise(r=>{tx.oncomplete=r;tx.onerror=r;});db.close();}catch(e){}
+}
+
+/* Compress image to a manageable base64 size for localStorage */
+function compressImageForStorage(img, maxH=720, quality=0.85){
+  const c=document.createElement("canvas");
+  const scale=Math.min(1,maxH/img.naturalHeight);
+  c.width=Math.round(img.naturalWidth*scale);
+  c.height=Math.round(img.naturalHeight*scale);
+  const ctx=c.getContext("2d");ctx.drawImage(img,0,0,c.width,c.height);
+  try{return c.toDataURL("image/png");}catch(e){return img.src;}
+}
+
+/* ── FILE UPLOADS ── */
+function fileToImage(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>{const img=new Image();img.onload=()=>res({img,src:r.result});img.onerror=rej;img.src=r.result;};r.onerror=rej;r.readAsDataURL(file);});}
+function fileToDataUrl(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(file);});}
+
+async function uploadChar(who,file){
+  if(!file)return;
+  if(state.assetsLocked){$("#lockStatus").textContent="⚠ Assets are locked — unlock first to change.";return;}
+  const zone=who==="Rex"?$("#rexZone"):$("#louZone");
+  const remNote=who==="Rex"?$("#rexRemNote"):$("#louRemNote");
+  const skipRem=who==="Rex"?$("#skipBgRemRex"):$("#skipBgRemLou");
+
+  const showPreview=(img,src)=>{
+    state.chars[who]=img;
+    remNote.style.display="none";
+    const exist=zone.querySelector(".preview-img");if(exist)exist.remove();
+    zone.querySelector(".hint").style.display="none";
+    const pv=document.createElement("img");pv.className="preview-img";pv.src=src;zone.appendChild(pv);
+    updateNames();renderAll();
+  };
+
+  // If user checked "Skip background removal", use image as-is
+  if(skipRem&&skipRem.checked){
+    const {img,src}=await fileToImage(file);
+    showPreview(img,src);
+    return;
+  }
+
+  remNote.style.display="block";
+  try{
+    const {img,src}=await fileToImage(file);
+    removeBackground(img,cleaned=>{
+      state.chars[who]=cleaned;
+      remNote.style.display="none";
+      const exist=zone.querySelector(".preview-img");if(exist)exist.remove();
+      zone.querySelector(".hint").style.display="none";
+      const pv=document.createElement("img");pv.className="preview-img";pv.src=cleaned.src;zone.appendChild(pv);
+      updateNames();renderAll();
+    });
+  }catch(e){
+    const {img,src}=await fileToImage(file);
+    showPreview(img,src);
+  }
+}
+
+async function uploadBg(file){
+  if(!file)return;
+  if(state.assetsLocked && state.bg?.type!=="video" && localStorage.getItem(STORE+"_lockedBgVideo")!=="1"){$("#lockStatus").textContent="⚠ Assets are locked — unlock first to change.";return;}
+  const hint=$("#bgHint");
+  // Revoke old blob URL if one exists (free memory)
+  if(state._bgBlobUrl){URL.revokeObjectURL(state._bgBlobUrl);state._bgBlobUrl=null;}
+  if(state.bgVideoEl){state.bgVideoEl.pause();try{state.bgVideoEl.remove();}catch(e){}state.bgVideoEl=null;}
+  state.bg=null;
+
+  const isVid=file.type.startsWith("video/")||/\.(mp4|mov|webm|m4v|avi)$/i.test(file.name);
+  if(isVid){
+    hint.style.display="";hint.innerHTML="<strong>Loading video…</strong>";
+    const v=document.createElement("video");v.muted=true;v.loop=true;v.playsInline=true;
+    v.style.cssText="position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none";
+    document.body.appendChild(v);state.bgVideoEl=v;
+    // Use blob URL instead of data URL — much faster for large video files
+    const blobUrl=URL.createObjectURL(file);state._bgBlobUrl=blobUrl;
+    hint.innerHTML="<strong>Loading…</strong>";
+    const ok=await new Promise(res=>{let done=false;const fin=ok=>{if(!done){done=true;res(ok);}};v.addEventListener("canplay",()=>fin(true),{once:true});v.addEventListener("loadeddata",()=>fin(true),{once:true});v.addEventListener("error",()=>fin(false),{once:true});setTimeout(()=>fin(false),30000);v.src=blobUrl;v.load();});
+    if(!ok){URL.revokeObjectURL(blobUrl);state._bgBlobUrl=null;try{v.remove();}catch(e){}state.bgVideoEl=null;hint.innerHTML='<strong style="color:var(--bad)">⚠ Cannot decode video</strong>';showBgPreviewBox();return;}
+    await new Promise(r=>setTimeout(r,50));v.play().catch(()=>{});
+    state.bg={type:"video",el:v};hint.style.display="none";
+  }else{
+    hint.innerHTML="<strong>Loading…</strong>";
+    const {img,src}=await fileToImage(file);
+    state.bg={type:"image",el:img};hint.style.display="none";
+  }
+  showBgPreviewBox();startLoops();renderAll();
+}
+
+function showBgPreviewBox(){$("#bgPreviewBox").style.display="block";}
+
+/* ── MEDIA ── */
+async function uploadOverlay(file){if(!file||!state.script.length)return;const {img,src}=await fileToImage(file);addMediaLayer(img,src,"Uploaded");renderAll();}
+async function addImageFromUrl(){
+  if(!state.script.length){goTo(1);return;}
+  const url=$("#imageUrlInput").value.trim();if(!url)return;
+  const status=$("#mediaSearchStatus");status.textContent="Loading...";
+  try{const img=await loadRemoteImage(url);addMediaLayer(img,img.src,"URL image");$("#imageUrlInput").value="";status.textContent="Added.";}
+  catch(e){status.textContent="Could not load — download and upload instead.";}
+}
+function loadRemoteImage(url){const tryLoad=(proxyUrl)=>new Promise((res,rej)=>{const img=new Image();img.crossOrigin="anonymous";img.onload=()=>res(img);img.onerror=rej;img.src=proxyUrl;});const proxyUrl="/image-proxy?url="+encodeURIComponent(url);return tryLoad(proxyUrl).catch(()=>tryLoad(proxyUrl));}
+
+/* ── IMAGE SEARCH (via DDGS proxy) ── */
+async function searchUnsplash(){
+  const q=$("#mediaSearchInput").value.trim()||state.topic||"tech";
+  const status=$("#mediaSearchStatus");const results=$("#searchResults");
+  status.textContent="Searching...";results.innerHTML="";
+  try{
+    const r=await fetch("/media-search?query="+encodeURIComponent(q)+"&max_results=8");
+    const d=await r.json();
+    if(!d.ok){status.textContent="✗ "+(d.error||"Search failed");return;}
+    (d.results||[]).forEach(p=>{
+      const thumbUrl=p.thumbnail||p.url||"";
+      const imgUrl=p.url||thumbUrl;
+      const title=(p.title||"").slice(0,60);
+      const div=document.createElement("div");div.className="resultThumb";
+      div.innerHTML='<img src="'+escHtml(thumbUrl)+'" alt="'+escHtml(title)+'" loading="lazy" onerror="this.style.opacity=\'0.3\'"><div class="addBtn" style="position:absolute;top:3px;right:3px;background:var(--rex);border:none;border-radius:4px;color:#fff;padding:2px 5px;font-size:.6rem;font-weight:700;pointer-events:none;opacity:0;transition:.12s">+</div>';
+      div.addEventListener("click",async()=>{
+        status.textContent="Loading...";
+        try{
+          const img=await loadRemoteImage(imgUrl);
+          addMediaLayer(img,img.src,title||"Search result");
+          status.textContent="✓ Added";
+        }catch(e){
+          status.textContent="⚠ Could not load — try a different image.";
+        }
+      });
+      div.addEventListener("mouseenter",()=>{const b=div.querySelector(".addBtn");if(b)b.style.opacity="1";});
+      div.addEventListener("mouseleave",()=>{const b=div.querySelector(".addBtn");if(b)b.style.opacity="0";});
+      results.appendChild(div);
+    });
+    status.textContent=d.results?.length?d.results.length+" images found":"No results — try different keywords";
+  }catch(e){status.textContent="Search failed — check connection.";}
+}
+
+/* ── AI MEDIA RESEARCH ── */
+let _researchSceneCache={};
+
+async function autoResearchAll(){
+  if(!state.script.length){$("#researchStatus").textContent="Generate a script first.";return;}
+  const btn=$("#autoResearchBtn"),status=$("#researchStatus"),results=$("#researchResults");
+  btn.disabled=true;status.innerHTML='<span class="spinner"></span>Analyzing scenes & searching trusted sources…';
+  results.innerHTML="";
+
+  try{
+    // Build scenes array with topic context
+    const scenes=state.script.map(s=>({speaker:s.speaker,line:s.line}));
+    const topic=state.topic||$("#topicInput").value.trim()||"product";
+    const qs="topic="+encodeURIComponent(topic)+"&scenes="+encodeURIComponent(JSON.stringify(scenes))+"&max_per=4";
+    const r=await fetch("/media-research-scenes?"+qs);
+    const data=await r.json();
+
+    if(!data.ok){status.textContent="⚠ "+(data.error||"Search failed");btn.disabled=false;return;}
+
+    _researchSceneCache=data.scenes||{};
+    let totalFound=0;
+    Object.values(_researchSceneCache).forEach(arr=>{if(Array.isArray(arr))totalFound+=arr.length;});
+
+    renderResearchResults(_researchSceneCache);
+    status.textContent=totalFound?"✓ Found "+totalFound+" visuals across "+Object.keys(_researchSceneCache).filter(k=>_researchSceneCache[k].length).length+" scenes":"ℹ No matching visuals found — try different search terms or add a topic.";
+    // Also notify on Script page if user is there
+    const scriptStatus=$("#scriptStatus");
+    if(scriptStatus&&totalFound)scriptStatus.textContent+="  |  🔍 "+totalFound+" visuals ready (see Studio → Research)";
+    btn.disabled=false;
+  }catch(e){
+    status.textContent="⚠ Research failed: "+(e.message||"network error");
+    btn.disabled=false;
+  }
+}
+
+function clearResearch(){
+  _researchSceneCache={};
+  $("#researchResults").innerHTML="";
+  $("#researchStatus").textContent="";
+}
+
+function renderResearchResults(sceneData){
+  const container=$("#researchResults");
+  container.innerHTML="";
+
+  state.script.forEach((s,i)=>{
+    const images=sceneData[i]||sceneData[String(i)]||[];
+    if(!images.length)return;
+
+    // Scene header
+    const hdr=document.createElement("div");
+    hdr.className="researchSceneHeader";
+    const pillCls=s.speaker==="Rex"?"re":"lo";
+    hdr.innerHTML='<span class="researchSceneBadge">Scene '+(i+1)+' <span class="pill '+pillCls+'">'+escHtml(s.speaker)+'</span></span><span class="researchSceneText">'+escHtml(s.line.slice(0,70))+'</span>';
+    container.appendChild(hdr);
+
+    // Image grid
+    const grid=document.createElement("div");
+    grid.className="researchResultsGrid";
+    images.forEach(img=>{
+      const thumb=document.createElement("div");
+      thumb.className="researchThumb";
+      const imgUrl=img.url||img.thumbnail||"";
+      const thumbUrl=img.thumbnail||imgUrl;
+      const title=(img.title||"").slice(0,60);
+      const source=(img.source||"").slice(0,40);
+
+      thumb.innerHTML='<img src="'+escHtml(thumbUrl)+'" alt="'+escHtml(title)+'" loading="lazy" onerror="this.style.opacity=\'0.3\'"><div class="addBtn">+ Add</div><div class="srcTag">'+escHtml(source)+'</div>';
+      async function addThisImage(){
+        const status=$("#researchStatus");
+        status.textContent="Loading image…";
+        const sceneI=i;
+        try{
+          const loaded=await loadRemoteImage(imgUrl);
+          addMediaLayer(loaded,loaded.src,title||"Research image",sceneI);
+          if(state.scene!==sceneI){setScene(sceneI);updateSceneSelectors();}
+          status.textContent="✓ Added to Scene "+(sceneI+1);
+          $$(".mediaTab").forEach(x=>x.classList.toggle("active",x.dataset.mtab==="uploaded"));
+          $("#mediaTabSearch").style.display="none";
+          $("#mediaTabResearch").style.display="none";
+          $("#mediaTabUploaded").style.display="block";
+        }catch(e2){
+          console.error("Research add failed:",e2);
+          status.textContent="⚠ Could not load — try a different image.";
+        }
+      }
+      // Click anywhere on the thumb to add (only fires if not on addBtn)
+      thumb.addEventListener("click",(e)=>{if(!e.target.closest(".addBtn"))addThisImage();});
+      // Direct click on the + Add button
+      thumb.querySelector(".addBtn").addEventListener("click",(e)=>{e.stopPropagation();addThisImage();});
+      grid.appendChild(thumb);
+    });
+    container.appendChild(grid);
+  });
+
+  if(!container.children.length){
+    container.innerHTML='<div class="status" style="padding:12px;text-align:center">No product-related visuals found. Try adding more specific details (pricing, specs, features) to your script.</div>';
+  }
+}
+
+// Auto-trigger research after script generation
+
+/* ── MEDIA LAYERS ── */
+function sceneMedia(idx=state.scene){if(!state.mediaLayers[idx])state.mediaLayers[idx]=[];return state.mediaLayers[idx];}
+function addMediaLayer(img,src,title,sceneIdx){
+  const idx=sceneIdx!=null?sceneIdx:state.scene;
+  const layer={id:"m"+Date.now()+"_"+Math.random().toString(16).slice(2),img,src,title:title||"Media",x:.5,y:.5,w:state.mediaDefaultSize,sceneIdx:idx};
+  sceneMedia(idx).push(layer);
+  state.selectedMediaId=layer.id;state.editLayer="media";$("#editLayer").value="media";$("#mediaScale").value=Math.round(layer.w*100);
+  addMediaCard(layer);renderAll();return layer;
+}
+function addMediaCard(layer){
+  const item=document.createElement("div");item.className="mediaItem selected";item.dataset.mediaId=layer.id;
+  const sceneNum=(layer.sceneIdx!=null?layer.sceneIdx:state.scene)+1;
+  item.innerHTML='<img src="'+layer.src+'" alt=""><div class="mediaInfo">Scene '+sceneNum+': '+escHtml(layer.title)+'</div><button type="button">Select</button>';
+  item.querySelector("button").addEventListener("click",()=>{state.selectedMediaId=layer.id;state.editLayer="media";$("#editLayer").value="media";$("#mediaScale").value=Math.round(layer.w*100);selectMediaCard(layer.id);renderAll();});
+  $("#mediaList").prepend(item);selectMediaCard(layer.id);
+}
+function selectMediaCard(id){$$(".mediaItem").forEach(el=>el.classList.toggle("selected",el.dataset.mediaId===id));}
+function findMediaLayerById(id,curOnly=false){const pools=curOnly?[sceneMedia()]:Object.values(state.mediaLayers);return pools.flat().find(l=>l.id===id)||null;}
+function getSelectedMediaLayer(){let l=findMediaLayerById(state.selectedMediaId,true);if(l)return l;l=sceneMedia()[sceneMedia().length-1]||null;if(l)state.selectedMediaId=l.id;return l;}
+function resizeSelectedMedia(w){state.mediaDefaultSize=w;const l=getSelectedMediaLayer();if(l)l.w=w;renderAll();}
+
+/* ── NAMES ── */
+function updateNames(){$("#rexLabel").textContent=$("#rexName").value.trim()||"Rex";$("#louLabel").textContent=$("#louName").value.trim()||"Lou";updateAvatar("Rex",$("#rexAv"));updateAvatar("Lou",$("#louAv"));}
+function updateAvatar(who,el){const img=state.chars[who];if(img){el.textContent="";el.style.backgroundImage='url("'+img.src+'")';}else{el.textContent=who[0];el.style.backgroundImage="";}}
+
+/* ── STORAGE ── */
+function loadStored(){
+  try{
+    const k=localStorage.getItem(STORE+"_elkey");if(k){state.elApiKey=k;$("#elApiKey").value=k;$("#elKeyStatus").textContent="✓ Saved key loaded.";}
+    const ck=localStorage.getItem(STORE+"_claudekey");if(ck){state.claudeApiKey=ck;$("#claudeApiKey").value=ck;$("#claudeStatus").textContent="✓ Saved key loaded.";}
+    const eng=localStorage.getItem(STORE+"_engine");if(eng){state.voiceEngine=eng;$$(".voice-tab").forEach(b=>b.classList.toggle("active",b.dataset.engine===eng));$$(".voice-config").forEach(c=>c.classList.toggle("active",c.id==="cfg_"+eng));}
+    const rv=localStorage.getItem(STORE+"_elRexVid");if(rv){state.elVoiceIds.Rex=rv;$("#elRexVoiceId").value=rv;}
+    const lv=localStorage.getItem(STORE+"_elLouVid");if(lv){state.elVoiceIds.Lou=lv;$("#elLouVoiceId").value=lv;}
+    const grl=localStorage.getItem(STORE+"_gRexLang");if(grl){const s=$("#googleRexLang");if(s)s.value=grl;}
+    const gll=localStorage.getItem(STORE+"_gLouLang");if(gll){const s=$("#googleLouLang");if(s)s.value=gll;}
+    // Restore locked assets
+    const isLocked=localStorage.getItem(STORE+"_assetsLocked")==="1";
+    if(isLocked){state.assetsLocked=true;restoreLockedAssets().then(()=>{updateLockUI();});}else{updateLockUI();}
+    // Restore toggle states
+    const fadeOff=localStorage.getItem(STORE+"_imageFade");if(fadeOff==="0"){state.imageFade=false;updateFadeToggle();}
+    const motionOff=localStorage.getItem(STORE+"_charMotion");if(motionOff==="0"){state.charMotion=false;updateMotionToggle();}
+  }catch(e){}
+}
+
+/* ── CLAUDE KEY TEST ── */
+async function testClaudeKey(){
+  const key=state.claudeApiKey||$("#claudeApiKey").value.trim();
+  if(!key){$("#claudeStatus").textContent="Enter a key first.";return;}
+  $("#claudeStatus").innerHTML='<span class="spinner"></span>Testing...';
+  try{const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:20,messages:[{role:"user",content:"Hi"}]})});
+    if(r.ok){state.claudeApiKey=key;try{localStorage.setItem(STORE+"_claudekey",key);}catch(e){}$("#claudeStatus").textContent="✓ Key works!";}
+    else{const d=await r.json();$("#claudeStatus").textContent="✗ "+(d.error?.message||r.status);}
+  }catch(e){$("#claudeStatus").textContent="✗ Network error";}
+}
+
+/* ── CANVAS RESIZING ── */
+function resizeCanvases(){
+  const dpr=Math.min(window.devicePixelRatio||1,2);
+  const c=$("#previewCanvas");if(c){const r=c.getBoundingClientRect();c.width=Math.max(180,Math.round(r.width||195))*dpr;c.height=Math.max(320,Math.round(r.height||347))*dpr;}
+  const bpc=$("#bgPreviewCanvas");if(bpc&&$("#bgPreviewBox").style.display!=="none"){const r=bpc.getBoundingClientRect();bpc.width=Math.max(200,Math.round(r.width||400));bpc.height=105;}
+}
+
+/* ── SCENE MANAGEMENT ── */
+function setScene(i){if(!state.script.length)return;state.scene=Math.max(0,Math.min(state.script.length-1,i));$$(".dialogue").forEach((d,idx)=>d.classList.toggle("active",idx===state.scene));state.fadeState={lastSpeaker:null,transitionStart:0,duration:350,prevSpeaker:null,prevBox:null};updateSceneLabels();renderAll();}
+function moveScene(d){if(!state.script.length)return;const a=getActiveSceneIndexes();if(a.length){const p=a.indexOf(state.scene);setScene(a[(p+d+a.length)%a.length]);return;}setScene((state.scene+d+state.script.length)%state.script.length);}
+function updateSceneLabels(){$("#sceneCount").textContent=state.script.length?(state.scene+1)+" / "+state.script.length:"0 / 0";}
+function getActiveSceneIndexes(){
+  if(!state.script.length)return[];
+  if(state.playbackMode==="selected"&&state.selectedScenes.size)return[...state.selectedScenes].filter(i=>i>=0&&i<state.script.length).sort((a,b)=>a-b);
+  if(state.playbackMode==="selected")return[];
+  return state.script.map((_,i)=>i);
+}
+function getPlayableSceneIndexes(fromCur=false){const a=getActiveSceneIndexes();if(!fromCur||!a.length)return a;const p=a.indexOf(state.scene);return p>=0?a.slice(p):a;}
+function updateSceneSelectors(){
+  $$(".playbackMode").forEach(s=>s.value=state.playbackMode);
+  const a=getActiveSceneIndexes();
+  const label=state.script.length?"Selected: "+a.map(i=>"Sc "+(i+1)).join(", ")||"none":"Generate a script first.";
+  const el=$("#sceneSummary");if(el)el.textContent=label;
+  const box=$("#sceneChipsStudio");if(box){box.innerHTML="";state.script.forEach((_,i)=>{const b=document.createElement("button");b.type="button";b.className="sceneChip"+(a.includes(i)?" on":"");b.dataset.sceneIdx=i;b.textContent="Scene "+(i+1);box.appendChild(b);});}
+}
+
+/* ── RENDER LOOP ── */
+function startLoops(){
+  if(state.raf)cancelAnimationFrame(state.raf);
+  const tick=()=>{
+    if(state.bg?.type==="video"){const v=state.bg.el;if(v&&v.paused&&v.readyState>=2)v.play().catch(()=>{});}
+    if(state.tab===2)renderAll();
+    else drawBgPreview();
+    state.raf=requestAnimationFrame(tick);
+  };
+  tick();
+}
+
+function renderAll(){drawFrame($("#previewCanvas"),state.scene,-1);drawBgPreview();}
+
+function drawBgPreview(){
+  if(!state.bg)return;const c=$("#bgPreviewCanvas");if(!c)return;const ctx=c.getContext("2d");ctx.clearRect(0,0,c.width,c.height);
+  if(!drawBgToCtx(ctx,c.width,c.height)){ctx.fillStyle="#111";ctx.fillRect(0,0,c.width,c.height);ctx.fillStyle="rgba(255,255,255,.3)";ctx.font="11px Inter,sans-serif";ctx.textAlign="center";ctx.fillText("Loading...",c.width/2,c.height/2);}
+}
+
+function drawFrame(canvas,idx,wordIdx){
+  if(!canvas)return;const ctx=canvas.getContext("2d"),W=canvas.width,H=canvas.height;
+  const s=state.script[idx];ctx.clearRect(0,0,W,H);
+  if(!drawBgToCtx(ctx,W,H)){const g=ctx.createLinearGradient(0,0,W,H);g.addColorStop(0,"#14203c");g.addColorStop(.6,"#101018");g.addColorStop(1,"#07080d");ctx.fillStyle=g;ctx.fillRect(0,0,W,H);}
+  if(!s){ctx.fillStyle="rgba(255,255,255,.82)";ctx.font="800 "+Math.round(W*.08)+"px Inter,sans-serif";ctx.textAlign="center";ctx.fillText("Rex & Lou",W/2,H*.48);return;}
+  const mediaBoxes=drawMediaLayers(ctx,W,H,idx,canvas.id==="previewCanvas");
+  const charBox=drawCharacter(ctx,W,H,s.speaker);
+  const subBox=drawSubtitles(ctx,W,H,s,wordIdx);
+  if(canvas.id==="previewCanvas"){state.hit.chars[s.speaker]=charBox;state.hit.sub=subBox;state.hit.media=mediaBoxes;}
+}
+
+function drawBgToCtx(ctx,W,H){
+  const bg=state.bg;if(!bg)return false;
+  if(bg.type==="video"){const v=bg.el;if(!v||v.readyState<2||!v.videoWidth||!v.videoHeight)return false;const r=Math.max(W/v.videoWidth,H/v.videoHeight);const dw=v.videoWidth*r,dh=v.videoHeight*r;try{ctx.drawImage(v,(W-dw)/2,(H-dh)/2,dw,dh);return true;}catch(e){return false;}}
+  if(bg.type==="image"){const img=bg.el;if(!img.complete||!img.naturalWidth)return false;const r=Math.max(W/img.naturalWidth,H/img.naturalHeight);const dw=img.naturalWidth*r,dh=img.naturalHeight*r;ctx.drawImage(img,(W-dw)/2,(H-dh)/2,dw,dh);return true;}
+  return false;
+}
+
+function drawMediaLayers(ctx,W,H,idx,showSel){
+  const boxes=[];(state.mediaLayers[idx]||[]).forEach(layer=>{const img=layer.img;if(!img?.complete||!img.naturalWidth)return;const dw=W*layer.w,dh=dw/(img.naturalWidth/img.naturalHeight);const x=layer.x*W-dw/2,y=layer.y*H-dh/2;ctx.save();ctx.shadowColor="rgba(0,0,0,.45)";ctx.shadowBlur=W*.025;ctx.drawImage(img,x,y,dw,dh);if(showSel&&state.editLayer==="media"&&state.selectedMediaId===layer.id){ctx.setLineDash([6,5]);ctx.lineWidth=Math.max(2,W*.008);ctx.strokeStyle="#41cf7d";ctx.strokeRect(x,y,dw,dh);}ctx.restore();boxes.push({id:layer.id,layer,x,y,w:dw,h:dh});});
+  return boxes;
+}
+
+function drawCharacter(ctx,W,H,speaker){
+  const isRex=speaker==="Rex",img=state.chars[speaker];
+  
+  // ── Fade transition ──
+  let fadeAlpha=1, fadeOutAlpha=0, fadeOutBox=null;
+  if(state.imageFade){
+    const now=performance.now();
+    // Detect speaker change
+    if(state.fadeState.lastSpeaker!==speaker){
+      // Save prev speaker for fade-out
+      if(state.fadeState.lastSpeaker&&state.fadeState.lastSpeaker!==speaker){
+        state.fadeState.prevSpeaker=state.fadeState.lastSpeaker;
+        state.fadeState.prevBox=state.hit?.chars?.[state.fadeState.prevSpeaker]||null;
+      }
+      state.fadeState.lastSpeaker=speaker;
+      state.fadeState.transitionStart=now;
+    }
+    const elapsed=now-state.fadeState.transitionStart;
+    if(elapsed<state.fadeState.duration){
+      // Fade-in: 0→1 for new character
+      fadeAlpha=Math.min(1,elapsed/state.fadeState.duration);
+      fadeAlpha=fadeAlpha*fadeAlpha*(3-2*fadeAlpha); // ease in/out
+      // Fade-out: 1→0 for previous character
+      fadeOutAlpha=1-fadeAlpha;
+      fadeOutBox=state.fadeState.prevBox;
+    }else{
+      // Transition complete — clear prev
+      state.fadeState.prevSpeaker=null;
+      state.fadeState.prevBox=null;
+    }
+  }
+  
+  // ── Draw previous character fading OUT ──
+  if(fadeOutAlpha>0.02&&fadeOutBox&&state.fadeState.prevSpeaker&&state.chars[state.fadeState.prevSpeaker]?.complete){
+    const prevImg=state.chars[state.fadeState.prevSpeaker];
+    if(prevImg?.naturalWidth){
+      ctx.save();
+      ctx.globalAlpha=fadeOutAlpha;
+      ctx.shadowColor="rgba(0,0,0,.8)";
+      ctx.shadowBlur=W*.07;
+      ctx.shadowOffsetY=H*.012;
+      ctx.shadowOffsetX=state.fadeState.prevSpeaker==="Rex"?W*.025:-W*.025;
+      ctx.drawImage(prevImg,fadeOutBox.x,fadeOutBox.y,fadeOutBox.w,fadeOutBox.h);
+      ctx.restore();
+    }
+  }
+  
+  if(img?.complete&&img.naturalWidth){
+    const maxH=H*.64*state.charScale,scale=maxH/img.naturalHeight;
+    const dw=img.naturalWidth*scale,dh=img.naturalHeight*scale;
+    const cp=state.charPos[speaker];
+    const x=cp?cp.x*W-dw/2:(isRex?W*.02:W-dw-W*.02);
+    const y=cp?cp.y*H-dh/2:H-dh-H*.055;
+    
+    ctx.save();
+    ctx.globalAlpha=fadeAlpha;
+
+    // ── Character Motion ──
+    if(state.charMotion){
+      const t=performance.now()*0.001;
+      const cx=x+dw/2,cy=y+dh/2;
+      const phase=isRex?0:1.7;
+      const mx=Math.sin(t*0.85+phase)*W*.006;       // gentle side-to-side
+      const my=Math.cos(t*1.05+phase)*H*.004;       // soft float
+      const ms=1+Math.sin(t*0.7+phase)*0.012;       // subtle breathing
+      const mr=Math.sin(t*0.6+phase)*0.22*(Math.PI/180); // micro rotation
+      ctx.translate(cx+mx,cy+my);
+      ctx.rotate(mr);
+      ctx.scale(ms,ms);
+      ctx.translate(-cx,-cy);
+    }
+
+    ctx.shadowColor="rgba(0,0,0,.8)";
+    ctx.shadowBlur=W*.07;
+    ctx.shadowOffsetY=H*.012;
+    ctx.shadowOffsetX=isRex?W*.025:-W*.025;
+    ctx.drawImage(img,x,y,dw,dh);
+    ctx.restore();
+    return{x,y,w:dw,h:dh};
+  }
+  
+  // Placeholder
+  ctx.globalAlpha=fadeAlpha;
+  const ph=H*.45*state.charScale,pw=ph*.5;
+  const cp=state.charPos[speaker];
+  const x=cp?cp.x*W-pw/2:(isRex?W*.05:W-pw-W*.05);
+  const y=cp?cp.y*H-ph/2:H*.39;
+  ctx.fillStyle=isRex?"rgba(74,158,255,.18)":"rgba(255,184,74,.18)";
+  rounded(ctx,x,y,pw,ph,W*.03);ctx.fill();
+  ctx.fillStyle=isRex?"#4a9eff":"#ffb84a";
+  ctx.font="900 "+Math.round(pw*.45)+"px Inter,sans-serif";
+  ctx.textAlign="center";ctx.fillText(speaker[0],x+pw/2,y+ph*.58);
+  ctx.globalAlpha=1;
+  return{x,y,w:pw,h:ph};
+}
+
+function drawSubtitles(ctx,W,H,s,wordIdx){
+  const isRex=s.speaker==="Rex",accent=isRex?"#4a9eff":"#ffb84a";
+  const words=s.line.split(/\s+/).filter(Boolean);
+  const style=$("#subStyle")?.value||"word";const baseSize=W*.082*state.textScale;const maxW=W*.85;const baseFont="Inter,Arial,sans-serif";let fs=Math.max(16,baseSize);
+  if(style==="word"){
+    const fi=typeof wordIdx==="number"?wordIdx:-1,floored=Math.floor(fi),frac=fi<0?1:Math.max(0,Math.min(1,fi-floored));const si=Math.max(0,floored-1),ei=Math.min(words.length,floored+2);
+    const visible=words.slice(si,ei).join(" ");
+    ctx.font="900 "+fs+"px "+baseFont;let groups=wrap(ctx,visible,maxW);fs=fitFont(ctx,groups,Math.min(fs,baseSize+8),maxW,14,"900",baseFont);groups=wrap(ctx,visible,maxW);
+    ctx.font="900 "+fs+"px "+baseFont;const lh=fs*1.22;const bw=Math.min(Math.max(...groups.map(g=>ctx.measureText(g).width),1)+fs*1.3,maxW+W*.02),bh=groups.length*lh+fs*1.4;
+    const pos=getSubXY(W,H,bw,bh);
+    const bg=ctx.createLinearGradient(pos.x,pos.y,pos.x,pos.y+bh);bg.addColorStop(0,"rgba(7,9,14,.95)");bg.addColorStop(1,"rgba(14,18,32,.88)");
+    ctx.fillStyle=bg;rounded(ctx,pos.x,pos.y,bw,bh,fs*.32);ctx.fill();ctx.lineWidth=1.5;ctx.strokeStyle="rgba(255,255,255,.12)";rounded(ctx,pos.x,pos.y,bw,bh,fs*.32);ctx.stroke();
+    ctx.textAlign="center";const cx=pos.x+bw/2;
+    groups.forEach((line,li)=>{const y=pos.y+fs*.72+(li+1)*lh,isLast=li===groups.length-1;
+      if(!isLast){ctx.fillStyle="rgba(255,255,255,.95)";ctx.fillText(line,cx,y);return;}
+      const parts=line.split(" "),last=parts.pop(),prev=parts.join(" ");const pw=prev?ctx.measureText(prev+" ").width:0,lw=ctx.measureText(last).width;const sx=cx-(pw+lw)/2;
+      if(prev){ctx.fillStyle="rgba(255,255,255,.95)";ctx.fillText(prev+" ",sx+pw/2,y);}
+      const anim=1-Math.pow(1-frac,2),scale=1+0.06*anim,alpha=0.5+0.5*anim;ctx.save();ctx.globalAlpha=alpha;ctx.translate(sx+pw+lw/2,y);ctx.scale(scale,scale);ctx.fillStyle=accent;ctx.fillText(last,0,0);ctx.restore();ctx.globalAlpha=1;
+    });
+    return{x:pos.x,y:pos.y,w:bw,h:bh};
+  }else{
+    const bsz=baseSize*.88;ctx.font="800 "+bsz+"px "+baseFont;let lines=wrap(ctx,s.line.trim(),maxW);fs=fitFont(ctx,lines,Math.min(bsz,baseSize+6),maxW,14,"800",baseFont);
+    ctx.font="800 "+fs+"px "+baseFont;lines=wrap(ctx,s.line.trim(),maxW);const lh=fs*1.28,pad=fs*.58;
+    const bw=Math.min(maxW,Math.max(...lines.map(l=>ctx.measureText(l).width))+pad*2),bh=lines.length*lh+pad*2;const pos=getSubXY(W,H,bw,bh);
+    const g=ctx.createLinearGradient(pos.x,pos.y,pos.x,pos.y+bh);g.addColorStop(0,"rgba(10,12,18,.93)");g.addColorStop(1,"rgba(20,24,42,.96)");ctx.fillStyle=g;rounded(ctx,pos.x,pos.y,bw,bh,fs*.4);ctx.fill();
+    ctx.fillStyle=accent;ctx.fillRect(pos.x+pad*.4,pos.y+pad*.38,bw-pad*.8,Math.max(4,fs*.14));ctx.fillStyle="#fff";ctx.textAlign="center";
+    lines.forEach((line,i)=>ctx.fillText(line,pos.x+bw/2,pos.y+pad+(i+1)*lh-fs*.08));return{x:pos.x,y:pos.y,w:bw,h:bh};
+  }
+}
+
+function getSubXY(W,H,bw,bh){const pad=W*.04;let x,y;if(state.subCustom){x=state.subCustom.x*W-bw/2;y=state.subCustom.y*H-bh/2;}else{x=state.subPos.includes("left")?pad:state.subPos.includes("right")?W-bw-pad:(W-bw)/2;y=state.subPos.includes("top")?H*.06:state.subPos.includes("mid")?(H-bh)/2:H*.72;}return{x:clamp(x,pad*.5,W-bw-pad*.5),y:clamp(y,H*.025,H-bh-H*.025)};}
+
+/* ── DRAG ── */
+function bindCanvasDrag(){
+  const canvas=$("#previewCanvas");
+  const pt=e=>{const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*canvas.width/r.width,y:(e.clientY-r.top)*canvas.height/r.height};};
+  canvas.addEventListener("pointerdown",e=>{const p=pt(e),s=state.script[state.scene];if(!s)return;
+    if(state.editLayer==="character"){state.drag={type:"char",speaker:s.speaker};state.charPos[s.speaker]={x:clamp(p.x/canvas.width,.05,.95),y:clamp(p.y/canvas.height,.08,.98)};}
+    else if(state.editLayer==="media"){const l=getSelectedMediaLayer();if(!l)return;state.selectedMediaId=l.id;selectMediaCard(l.id);state.drag={type:"media",id:l.id};l.x=clamp(p.x/canvas.width,.02,.98);l.y=clamp(p.y/canvas.height,.02,.98);}
+    else{state.drag={type:"sub"};state.subCustom={x:clamp(p.x/canvas.width,.05,.95),y:clamp(p.y/canvas.height,.04,.96)};}canvas.setPointerCapture(e.pointerId);e.preventDefault();renderAll();
+  });
+  canvas.addEventListener("pointermove",e=>{if(!state.drag)return;const p=pt(e);
+    if(state.drag.type==="sub")state.subCustom={x:clamp(p.x/canvas.width,.05,.95),y:clamp(p.y/canvas.height,.04,.96)};
+    if(state.drag.type==="char")state.charPos[state.drag.speaker]={x:clamp(p.x/canvas.width,.05,.95),y:clamp(p.y/canvas.height,.08,.98)};
+    if(state.drag.type==="media"){const l=findMediaLayerById(state.drag.id);if(l){l.x=clamp(p.x/canvas.width,.02,.98);l.y=clamp(p.y/canvas.height,.02,.98);}}renderAll();
+  });
+  canvas.addEventListener("pointerup",()=>state.drag=null);canvas.addEventListener("pointercancel",()=>state.drag=null);
+}
+
+function resetLayout(){state.textScale=1;state.charScale=1;state.subCustom=null;state.charPos={Rex:null,Lou:null};state.mediaDefaultSize=.62;Object.values(state.mediaLayers).flat().forEach(l=>{l.x=.5;l.y=.5;l.w=.62;});$("#textScale").value=100;$("#charScale").value=100;$("#mediaScale").value=62;renderAll();}
+
+function applyPositionButton(pos){
+  if(state.editLayer==="subtitle"){state.subPos=pos;state.subCustom=null;return;}
+  if(state.editLayer==="media"){const l=getSelectedMediaLayer();if(!l)return;l.x=pos.includes("left")?.22:pos.includes("right")?.78:.5;l.y=pos.includes("top")?.24:pos.includes("mid")?.5:.76;return;}
+  const s=state.script[state.scene];if(!s)return;const x=pos.includes("left")?.2:pos.includes("right")?.8:.5;const y=pos.includes("top")?.26:pos.includes("mid")?.52:.78;state.charPos[s.speaker]={x,y};
+}
+
+/* ── TOGGLE HELPERS ── */
+function updateFadeToggle(){const sw=$("#toggleFadeSw");if(sw)sw.classList.toggle("on",state.imageFade);}
+function updateMotionToggle(){const sw=$("#toggleMotionSw");if(sw)sw.classList.toggle("on",state.charMotion);}
+
+/* ── VOICE: EDGE TTS (MICROSOFT) ── */
+const EDGE_VOICES={get Rex(){return $("#googleRexLang")?.value||"en-GB-RyanNeural";},get Lou(){return $("#googleLouLang")?.value||"en-US-GuyNeural";}};
+let _activePreviewAudio=null;
+function playGoogleAudio(text,voice){if(_activePreviewAudio){try{_activePreviewAudio.pause();_activePreviewAudio=null;}catch(e){}}speechSynthesis.cancel();return new Promise(resolve=>{let handled=false;const done=()=>{if(handled)return;handled=true;_activePreviewAudio=null;resolve();};const url="/tts-proxy?text="+encodeURIComponent(text)+"&voice="+(voice||"en-GB-RyanNeural");fetch(url).then(r=>{if(!r.ok)throw new Error(r.status);return r.blob();}).then(blob=>{const aurl=URL.createObjectURL(blob);const a=new Audio(aurl);_activePreviewAudio=a;a.onended=()=>{URL.revokeObjectURL(aurl);done();};a.onerror=()=>{URL.revokeObjectURL(aurl);if(!handled)speakBrowser({line:text,speaker:"Rex"});done();};const p=a.play();if(p)p.catch(()=>{URL.revokeObjectURL(aurl);if(!handled)speakBrowser({line:text,speaker:"Rex"});done();});}).catch(()=>{if(!handled)speakBrowser({line:text,speaker:"Rex"});done();});});}
+
+/* ── VOICE: ELEVENLABS ── */
+async function speakElevenLabs(text,voiceId,apiKey,audioCtx,destNode){
+  if(!apiKey||!voiceId){await speakBrowser({line:text,speaker:"Rex"});return;}
+  try{
+    const r=await fetch("https://api.elevenlabs.io/v1/text-to-speech/"+voiceId,{method:"POST",headers:{"xi-api-key":apiKey,"Content-Type":"application/json"},body:JSON.stringify({text:text.slice(0,500),voice_settings:{stability:0.5,similarity_boost:0.75}})});
+    if(!r.ok)throw new Error(r.status);
+    const blob=await r.blob();
+    // If AudioContext + destNode provided, route audio through it for capture
+    if(audioCtx && destNode){
+      const arrayBuf=await blob.arrayBuffer();
+      const decoded=await audioCtx.decodeAudioData(arrayBuf);
+      const src=audioCtx.createBufferSource();
+      src.buffer=decoded;
+      src.connect(destNode);
+      src.connect(audioCtx.destination);
+      await new Promise(res=>{src.onended=res;src.start();});
+    }else{
+      const url=URL.createObjectURL(blob);
+      await new Promise((res)=>{const a=new Audio(url);a.onended=()=>{URL.revokeObjectURL(url);res();};a.onerror=()=>{URL.revokeObjectURL(url);res();};a.play().catch(res);});
+    }
+  }catch(e){await speakBrowser({line:text,speaker:"Rex"});}
+}
+
+/* ── VOICE: BROWSER ── */
+async function ensureVoices(){if(speechSynthesis.getVoices().length)return;await new Promise(r=>{speechSynthesis.onvoiceschanged=r;setTimeout(r,1200);});}
+async function loadBrowserVoices(){
+  await ensureVoices();const all=speechSynthesis.getVoices();const voices=all.filter(v=>v.lang.startsWith("en"))||all;
+  ["rex","lou"].forEach(c=>{const sel=$("#browser"+c[0].toUpperCase()+c.slice(1)+"Voice");if(!sel)return;sel.innerHTML="";voices.forEach(v=>{const o=document.createElement("option");o.value=v.name;o.textContent=v.name+" ("+v.lang+")";sel.appendChild(o);});
+    const C=c[0].toUpperCase()+c.slice(1);const pref=c==="rex"?["Daniel","Alex","Google UK English Male","Microsoft David"]:["Samantha","Karen","Moira","Google US English"];
+    const fnd=pref.map(p=>voices.find(v=>v.name.includes(p))).find(Boolean);if(fnd)sel.value=fnd.name;state.voiceSettings[C].voiceName=sel.value;
+  });
+}
+
+async function speakBrowser(s){
+  await ensureVoices();const set=state.voiceSettings[s.speaker]||{};const chunks=splitChunks(s.line,200);
+  for(const chunk of chunks){await new Promise(r=>{const u=new SpeechSynthesisUtterance(chunk);const voices=speechSynthesis.getVoices();const voice=voices.find(v=>v.name===set.voiceName)||voices.find(v=>v.lang.startsWith("en"))||voices[0];if(voice)u.voice=voice;u.pitch=set.pitch||1;u.rate=set.rate||1;u.onend=r;u.onerror=r;speechSynthesis.speak(u);});await wait(100);}
+}
+
+/* ── UNIFIED SPEAK ── */
+async function speakLine(s, audioCtx, destNode){
+  if(state.voiceEngine==="ai")return wait(estimateMs(s.line));
+  if(state.voiceEngine==="elevenlabs"){const vid=s.speaker==="Rex"?state.elVoiceIds.Rex:state.elVoiceIds.Lou;const key=state.elApiKey||$("#elApiKey").value.trim();await speakElevenLabs(s.line,vid,key,audioCtx,destNode);return;}
+  if(state.voiceEngine==="google")return speakGoogle(s,audioCtx,destNode);
+  return speakBrowser(s);
+}
+
+async function speakGoogle(s,audioCtx,destNode){const voice=EDGE_VOICES[s.speaker]||"en-GB-RyanNeural";const chunks=splitChunks(s.line,180);
+  for(const chunk of chunks){
+    const url="/tts-proxy?text="+encodeURIComponent(chunk)+"&voice="+voice;
+    try{
+      const r=await fetch(url);
+      if(!r.ok)throw new Error(r.status);
+      const blob=await r.blob();
+      if(audioCtx&&destNode){
+        const arrayBuf=await blob.arrayBuffer();
+        const decoded=await audioCtx.decodeAudioData(arrayBuf);
+        const src=audioCtx.createBufferSource();
+        src.buffer=decoded;
+        src.connect(destNode);
+        src.connect(audioCtx.destination);
+        await new Promise(res=>{src.onended=res;src.start();});
+      }else{
+        const aurl=URL.createObjectURL(blob);
+        await new Promise((res)=>{const a=new Audio(aurl);a.onended=()=>{URL.revokeObjectURL(aurl);res();};a.onerror=()=>{URL.revokeObjectURL(aurl);res();};a.play().catch(res);});
+      }
+    }catch(e){await playGoogleAudio(chunk,voice);}
+    await wait(80);
+  }
+}
+
+async function previewVoice(speaker){
+  await ensureVoices();const sample=speaker==="Rex"?"Alright, let me break this down for you — this one is actually wild.":"Wait, okay, I did NOT see that coming. How is that even a thing?";
+  if(state.voiceEngine==="elevenlabs"){const vid=speaker==="Rex"?$("#elRexVoiceId").value:$("#elLouVoiceId").value;const key=state.elApiKey||$("#elApiKey").value.trim();await speakElevenLabs(sample,vid,key);}
+  else if(state.voiceEngine==="google")await playGoogleAudio(sample,EDGE_VOICES[speaker]);
+  else await speakBrowser({line:sample,speaker});
+}
+
+/* ── SCRIPT GENERATION ── */
+async function generateScript(){
+  const notes=$("#notesInput").value.trim(),topic=$("#topicInput").value.trim();
+  if(!notes){$("#scriptStatus").textContent="Add talking points first.";return;}
+  state.topic=topic||"this topic";
+  const lineCount=+$("#lineCountSelect").value||8,tone=$("#toneSelect").value||"funny";
+  const rexName=$("#rexName").value.trim()||"Rex",louName=$("#louName").value.trim()||"Lou";
+  const vo=$("#voiceOverride").value;if(vo)state.voiceEngine=vo;
+  const apiKey=state.claudeApiKey||localStorage.getItem(STORE+"_claudekey")||"";
+  if(apiKey)await generateWithAI(notes,topic,rexName,louName,lineCount,tone,apiKey);
+  else generateFast(notes,topic,rexName,louName,lineCount,tone);
+}
+
+async function generateWithAI(notes,topic,rexName,louName,lineCount,tone,apiKey){
+  const btn=$("#generateBtn"),status=$("#scriptStatus"),prog=$("#genProgress"),fill=$("#genProgressFill");
+  btn.disabled=true;status.innerHTML='<span class="spinner"></span>AI writing...';prog.style.display="block";fill.style.width="20%";
+  const tones={funny:"casual and funny with natural banter",hype:"high energy and hype like an excited YouTuber",informative:"clear and informative",debate:"slight disagreement",shocked:"shocked and amazed"};
+  const sys="You write dialogue for two characters in viral short-form videos.\n"+rexName+" = knowledgeable friend who explains clearly. "+louName+" = the viewer's voice, reacts with surprise or humor.\nCRITICAL: EXACTLY "+lineCount+" lines, alternating, starting with "+rexName+". Line 1 MUST be a hook. Max 18 words per line. Tone: "+tones[tone]+". Return ONLY valid JSON: {\"lines\":[{\"speaker\":\"...\",\"line\":\"...\"}]}";
+  try{
+    fill.style.width="50%";const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":apiKey,"anthropic-version":"2023-06-01"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,system:sys,messages:[{role:"user",content:"Topic: "+(topic||"this topic")+"\nNotes: "+notes}]})});
+    fill.style.width="80%";if(!r.ok){const d=await r.json();throw new Error(d.error?.message||r.status);}
+    const data=await r.json(),raw=data.content?.[0]?.text||"",jm=raw.match(/\{[\s\S]*\}/);if(!jm)throw new Error("No JSON");
+    const parsed=JSON.parse(jm[0]);if(!parsed.lines?.length)throw new Error("Empty");
+    state.script=parsed.lines.map(l=>({speaker:l.speaker===rexName?"Rex":"Lou",line:l.line}));
+    fill.style.width="100%";status.textContent="✓ AI script — "+state.script.length+" lines";
+  }catch(err){console.error(err);status.textContent="AI failed ("+err.message+") — using built-in";generateFast(notes,topic,rexName,louName,lineCount,tone);return;}
+  finally{btn.disabled=false;setTimeout(()=>{prog.style.display="none";fill.style.width="0%";},800);}
+  finalizeScript();
+}
+
+function generateFast(notes,topic,rexName,louName,lineCount,tone){
+  const t=topic||"this product";
+  const hooks={funny:["Nobody asked for a "+t+" but I'm so glad it exists.","This "+t+" broke my brain and I need to talk about it.","I have strong opinions about the "+t+" and zero regrets."],hype:["The "+t+" just changed everything — I'm not being dramatic.","Stop what you're doing. The "+t+" is actually here.","The "+t+" dropped and the specs are genuinely insane."],informative:["Most people don't know what makes the "+t+" actually different.","The "+t+" has one feature nobody is talking about.","Before you buy a "+t+", there's something you need to know."],debate:["Hot take: the "+t+" is either genius or a huge mistake.","People are fighting over the "+t+" and honestly, both sides have a point."],shocked:["I physically gasped when I saw what the "+t+" actually does.","Wait until you see what the "+t+" is capable of."]};
+  const hks=hooks[tone]||hooks.funny;
+  const reax={funny:["Wait, they actually made that? I have so many questions.","Okay but who greenlit this and can I shake their hand?","That sounds ridiculous. I want one immediately.","Bold move. Genuinely bold move."],hype:["That's actually insane. What are the specs?","Okay okay — so what does that actually mean?","No way. That can't be real performance.","I did NOT expect those numbers."],informative:["Okay so is that actually useful or just a spec sheet flex?","Right — so who is this actually for though?","That tracks. So should people buy it?","Fair. So what's the actual catch?"],debate:["I mean… I see the vision but also I have concerns.","That's either genius or they're going to get roasted.","Okay but be honest — would YOU actually use it?"],shocked:["I'm sorry — it does WHAT?","No. No way. Show me a video right now.","That's physically not possible. How?"]};
+  const ra=(reax[tone]||reax.funny);
+  const all=[
+    {speaker:"Rex",line:hks[Math.floor(Math.random()*hks.length)]},
+    {speaker:"Lou",line:ra[0]},
+    {speaker:"Rex",line:"The specs look normal until you see it in action — then it clicks. Everything about this is designed for one specific use case."},
+    {speaker:"Lou",line:ra[1]},
+    {speaker:"Rex",line:"Battery life, display quality, port selection — they didn't cut corners anywhere. It's rare to see this level of polish."},
+    {speaker:"Lou",line:ra[2]},
+    {speaker:"Rex",line:"Pricing is in a weird spot — not cheap, not crazy, just very specific. And for the target audience, it makes perfect sense."},
+    {speaker:"Lou",line:ra[3]},
+    {speaker:"Rex",line:"Bottom line: if you're the target person, you already know you want it. If not, you probably still want it after seeing it."},
+    {speaker:"Lou",line:"Which is exactly the kind of product that goes viral. Every single time."},
+    {speaker:"Rex",line:"Every time. Nobody is neutral on this thing. And that's the whole point."},
+    {speaker:"Lou",line:"Good. I refuse to be neutral. This is the content I come here for."},
+    {speaker:"Rex",line:"That's exactly why we make these. Someone has to say what everyone's thinking."},
+    {speaker:"Lou",line:"Keep doing it. I will be right here reacting dramatically."}
+  ];
+  state.script=all.slice(0,lineCount);
+  $("#scriptStatus").textContent="✓ Script ready — "+state.script.length+" lines";
+  finalizeScript();
+}
+
+function useSample(){$("#topicInput").value="portable suitcase TV";$("#notesInput").value="27 inch display folds inside a suitcase-style case on wheels. Battery powered for 3 hours. AirPlay and HDMI. Costs $1200. Great for patios, dorms, travel. Unusual product nobody asked for but everyone wants.";}
+function finalizeScript(){state.playbackMode="all";state.selectedScenes=new Set(state.script.map((_,i)=>i));buildScriptList();buildStudio();updateSceneSelectors();$("#scriptActions").style.display="flex";autoResearchAll();}
+function buildScriptList(){const list=$("#scriptList");list.innerHTML="";state.script.forEach((s,i)=>{const d=document.createElement("div");d.className="line";d.innerHTML='<span class="pill '+(s.speaker==="Rex"?"re":"lo")+'">'+escHtml(s.speaker)+'</span><p>'+escHtml(s.line)+'</p><span class="num">'+String(i+1).padStart(2,"0")+'</span>';list.appendChild(d);});}
+
+/* ── STUDIO BUILD ── */
+function buildStudio(){const list=$("#dialogueList");list.innerHTML="";$("#lineCount").textContent=state.script.length+" lines";state.script.forEach((s,i)=>{const d=document.createElement("div");d.className="dialogue"+(i===state.scene?" active":"");d.innerHTML='<span class="pill '+(s.speaker==="Rex"?"re":"lo")+'">'+escHtml(s.speaker)+'</span><p>'+escHtml(s.line)+'</p>';d.addEventListener("click",()=>setScene(i));list.appendChild(d);});updateSceneLabels();updateSceneSelectors();}
+
+/* ── PLAYBACK ── */
+async function previewAll(){
+  if(!state.script.length){goTo(1);return;}
+  if(state.playing){state.playing=false;speechSynthesis.cancel();stopWordAnim();$("#previewAllBtn").textContent="▶ Preview All";$("#previewStatus").textContent="Stopped.";return;}
+  const scenes=getActiveSceneIndexes();if(!scenes.length){$("#previewStatus").textContent="No scenes selected.";return;}
+  state.playing=true;$("#previewAllBtn").textContent="⏹ Stop";$("#playBtn").disabled=true;
+  try{for(const i of scenes){if(!state.playing)break;$("#previewStatus").textContent="Scene "+(i+1)+" / "+scenes.length;setScene(i);startWordAnim(i);await speakLine(state.script[i]);stopWordAnim();await wait(200);}
+    $("#previewStatus").textContent=state.playing?"✓ Done.":"Stopped.";}
+  finally{state.playing=false;stopWordAnim();$("#previewAllBtn").textContent="▶ Preview All";$("#playBtn").disabled=false;}
+}
+
+async function playOrStop(){
+  if(state.playing){state.playing=false;speechSynthesis.cancel();stopWordAnim();$("#playBtn").textContent="▶ Play";return;}
+  if(!state.script.length)return;const scenes=getPlayableSceneIndexes(true);if(!scenes.length)return;
+  state.playing=true;$("#playBtn").textContent="⏹ Stop";
+  for(const i of scenes){if(!state.playing)break;setScene(i);startWordAnim(i);await speakLine(state.script[i]);stopWordAnim();await wait(180);}
+  state.playing=false;$("#playBtn").textContent="▶ Play";
+}
+
+function startWordAnim(idx){stopWordAnim();const s=state.script[idx];if(!s)return;const words=s.line.split(/\s+/).filter(Boolean);const step=Math.max(110,estimateMs(s.line)/Math.max(1,words.length));const start=performance.now();function frame(){const el=performance.now()-start;const fi=$("#subStyle").value==="word"?Math.min(words.length-1,el/step):-1;drawFrame($("#previewCanvas"),idx,fi);if(el<step*words.length&&state.wordTimer!==0)state.wordTimer=requestAnimationFrame(frame);else state.wordTimer=0;}state.wordTimer=requestAnimationFrame(frame);}
+function stopWordAnim(){if(state.wordTimer){cancelAnimationFrame(state.wordTimer);state.wordTimer=0;}renderAll();}
+
+/* ── RECORDING ── */
+let mediaRecorder=null,recChunks=[],recAudioCtx=null;
+
+async function startRecording(){
+  const btn=$("#startRecordBtn"),stopBtn=$("#stopRecordBtn"),dot=$("#recDot"),status=$("#recStatus"),prog=$("#recProgress"),fill=$("#recProgressFill");
+  function err(msg){state.isRecording=false;status.textContent=msg;btn.disabled=false;stopBtn.disabled=true;dot.className="rec-dot off";setTimeout(()=>{prog.style.display="none";},5000);}
+  try{
+    if(!state.script.length){goTo(1);return;}
+    if(mediaRecorder&&mediaRecorder.state!=="inactive"){err("⚠ Recording already active");return;}
+    btn.disabled=true;stopBtn.disabled=false;dot.className="rec-dot";recChunks=[];
+    prog.style.display="block";fill.style.width="2%";status.textContent="Starting...";
+
+    // Create canvas for recording
+    const recCanvas=document.createElement("canvas");recCanvas.width=1080;recCanvas.height=1920;
+    recCanvas.style.cssText="position:fixed;top:-9999px;left:-9999px;opacity:0;pointer-events:none";document.body.appendChild(recCanvas);
+    status.textContent="Rendering first frame…";
+    drawFrame(recCanvas,getActiveSceneIndexes()[0]||0,-1);
+
+    // Setup audio capture
+    status.textContent="Setting up audio…";
+    let recAudioDest=null,recSilentOsc=null;
+    try{recAudioCtx=new(window.AudioContext||window.webkitAudioContext)();if(recAudioCtx.state==="suspended")await recAudioCtx.resume();recAudioDest=recAudioCtx.createMediaStreamDestination();
+      const osc=recAudioCtx.createOscillator(),sg=recAudioCtx.createGain();sg.gain.value=0.00001;osc.connect(sg);sg.connect(recAudioDest);osc.start();recSilentOsc=osc;}
+    catch(e){recAudioCtx=null;console.warn("AudioContext setup failed:",e);}
+
+    status.textContent="Starting recorder…";
+    const videoStream=recCanvas.captureStream(30);
+    const tracks=[...videoStream.getVideoTracks()];
+    if(recAudioDest){const audioTrack=recAudioDest.stream.getAudioTracks()[0];if(audioTrack)tracks.push(audioTrack);}
+    const stream=new MediaStream(tracks);
+    let mime="video/webm;codecs=vp9,opus";if(!MediaRecorder.isTypeSupported(mime))mime="video/webm;codecs=vp8,opus";if(!MediaRecorder.isTypeSupported(mime))mime="video/webm";if(!MediaRecorder.isTypeSupported(mime))mime="video/mp4";
+    mediaRecorder=new MediaRecorder(stream,{mimeType:mime,videoBitsPerSecond:6000000});
+    mediaRecorder.ondataavailable=e=>{if(e.data&&e.data.size>0)recChunks.push(e.data);};
+    mediaRecorder.start(50);await wait(100);
+
+    // Speak all scenes with continuous render loop for subtitles + bg animation
+    state.isRecording=true;
+    const scenes=getActiveSceneIndexes();
+    try{for(let si=0;si<scenes.length&&state.isRecording;si++){const i=scenes[si];const s=state.script[i];const words=s.line.split(/\s+/).filter(Boolean);const total=estimateMs(s.line);const step=total/Math.max(1,words.length);fill.style.width=(3+Math.round((si/scenes.length)*88))+"%";status.textContent="Recording "+s.speaker+": line "+(si+1)+"/"+scenes.length+"…";setScene(i);let done=false;const sp=(async()=>{await speakLine(s,recAudioCtx,recAudioDest);done=true;})();const t0=performance.now();while(!done||performance.now()-t0<total){if(!state.isRecording)break;const el=performance.now()-t0;drawFrame(recCanvas,i,$("#subStyle").value==="word"?Math.min(words.length-1,el/step):-1);await wait(1000/30);if(el>total*4)break;}await sp;await wait(200);}}
+    finally{
+      state.isRecording=false;
+      if(mediaRecorder&&mediaRecorder.state!=="inactive"){const done=new Promise(r=>{mediaRecorder.onstop=r;});mediaRecorder.stop();await done;}
+      try{if(recSilentOsc)recSilentOsc.stop();}catch(e){}try{if(recAudioCtx)await recAudioCtx.close();}catch(e){}try{recCanvas.remove();}catch(e){}
+    }
+
+    fill.style.width="100%";
+    if(recChunks.length>0){
+      const blob=new Blob(recChunks,{type:mime});const slug=(state.topic||"rex_lou").toLowerCase().replace(/[^a-z0-9]+/g,"_").slice(0,36)||"rex_lou";
+      const ext=mime.includes("mp4")?".mp4":".webm";const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=slug+"_recording"+ext;a.style.display="none";document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(url);a.remove();},60000);
+      status.textContent="✓ Downloaded ("+(blob.size/1024/1024).toFixed(1)+"MB)";
+    }else{status.textContent="⚠ No data captured — try Chrome.";}
+    btn.disabled=false;stopBtn.disabled=true;dot.className="rec-dot off";setTimeout(()=>{prog.style.display="none";},4000);
+  }catch(e){
+    console.error("Recording error:",e);
+    err("⚠ Error: "+(e.message||e));
+  }
+}
+
+function stopRecording(){
+  state.isRecording=false;
+  if(mediaRecorder&&mediaRecorder.state!=="inactive"){mediaRecorder.stop();$("#recStatus").textContent="Stopping...";}
+}
+
+/* ── UTILS ── */
+function splitChunks(text,maxLen){const segs=text.replace(/([.?!])\s+/g,"$1|").replace(/([,;:])\s+/g,"$1|").split("|").map(s=>s.trim()).filter(Boolean);const out=[];let cur="";for(const seg of segs){if((cur+seg).length>maxLen&&cur){out.push(cur);cur=seg;}else cur=cur?cur+" "+seg:seg;}if(cur)out.push(cur);return out;}
+function estimateMs(text){const words=text.trim().split(/\s+/).length;const sp=(text.match(/[.?!]/g)||[]).length*220;const cp=(text.match(/[,;:]/g)||[]).length*120;return Math.max(1500,words/145*60000+sp+cp);}
+function wrap(ctx,text,maxW){const out=[];let cur="";text.split(" ").forEach(w=>{const n=cur?cur+" "+w:w;if(ctx.measureText(n).width>maxW&&cur){out.push(cur);cur=w;}else cur=n;});if(cur)out.push(cur);return out;}
+function fitFont(ctx,lines,start,maxW,min,weight,family){let sz=start;while(sz>min){ctx.font=weight+" "+sz+"px "+family;if(lines.every(l=>ctx.measureText(l).width<=maxW))break;sz--;}return sz;}
+function rounded(ctx,x,y,w,h,r){ctx.beginPath();if(ctx.roundRect)ctx.roundRect(x,y,w,h,r);else{ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);}}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+function wait(ms){return new Promise(r=>setTimeout(r,ms));}
+function escHtml(s){const m={"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"};return String(s).replace(/[&<>"']/g,c=>m[c]);}
+</script>
+</body>
+</html>

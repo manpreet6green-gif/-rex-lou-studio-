@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: rex-lou-studio
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python3 tts_proxy.py
