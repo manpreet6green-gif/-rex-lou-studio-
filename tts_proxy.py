@@ -4,11 +4,39 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import urllib.request, urllib.parse, os, sys, mimetypes, asyncio, json, re, time
 
-try:
-    from youtube_transcript_api import YouTubeTranscriptApi
-    HAS_YT = True
-except ImportError:
-    HAS_YT = False
+# YouTube transcript fetcher using direct HTTP (no external deps)
+def fetch_youtube_transcript(video_id):
+    # Method 1: youtubetranscript.com (fast, reliable)
+    try:
+        url = f"https://youtubetranscript.com/?v={video_id}"
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req, timeout=10) as r:
+            data = json.loads(r.read())
+            if isinstance(data, list) and len(data):
+                return ' '.join(t.get('text','') for t in data)
+    except Exception:
+        pass
+    # Method 2: try fetching from YouTube page directly
+    try:
+        url = f"https://www.youtube.com/watch?v={video_id}"
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0', 'Accept-Language': 'en-US'})
+        with urllib.request.urlopen(req, timeout=10) as r:
+            html = r.read().decode('utf-8', errors='ignore')
+            # Extract caption data from ytInitialPlayerResponse
+            import re as _re
+            match = _re.search(r'"captionTracks"\s*:\s*\[(.*?)\][^]]*?"baseUrl"\s*:\s*"([^"]+)"', html)
+            if match:
+                caption_url = match.group(2).replace('\u0026', '&')
+                req2 = urllib.request.Request(caption_url, headers={'User-Agent': 'Mozilla/5.0'})
+                with urllib.request.urlopen(req2, timeout=10) as r2:
+                    xml = r2.read().decode('utf-8', errors='ignore')
+                    texts = _re.findall(r'<text[^>]*>([^<]+)</text>', xml)
+                    if texts:
+                        return ' '.join(texts)
+    except Exception:
+        pass
+    return ''
+HAS_YT = True
 
 PORT = int(os.environ.get("PORT", 8080))
 DIR = os.path.dirname(os.path.abspath(__file__))
@@ -180,12 +208,10 @@ class ProxyHandler(BaseHTTPRequestHandler):
                     self.wfile.write(body)
                     return
 
-                # Get transcript
-                try:
-                    transcript = YouTubeTranscriptApi.get_transcript(video_id)
-                    full_text = ' '.join(t.get('text','') for t in transcript)
-                except Exception as e:
-                    body = json.dumps({'ok': False, 'error': f'No transcript available: {str(e)[:100]}'}).encode('utf-8')
+                # Get transcript using built-in HTTP fetcher
+                full_text = fetch_youtube_transcript(video_id)
+                if not full_text or len(full_text) < 50:
+                    body = json.dumps({'ok': False, 'error': 'No transcript available — video may have captions disabled or is too short'}).encode('utf-8')
                     self.send_response(200)
                     self.send_header('Content-Type', 'application/json')
                     self.send_header('Content-Length', str(len(body)))
