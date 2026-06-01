@@ -4,53 +4,16 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import urllib.request, urllib.parse, os, sys, mimetypes, asyncio, json, re, time
 
-# YouTube transcript fetcher using direct HTTP (no external deps)
+# YouTube transcript fetcher using youtube_transcript_api
 def fetch_youtube_transcript(video_id):
-    # Method 1: youtubetranscript.com (fast when it works)
     try:
-        url = f"https://youtubetranscript.com/?v={video_id}"
-        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-        with urllib.request.urlopen(req, timeout=10) as r:
-            raw = r.read()
-            # Check if we got JSON or HTML
-            if raw and raw[:1] == b'[':
-                data = json.loads(raw)
-                if isinstance(data, list) and len(data):
-                    return ' '.join(t.get('text','') for t in data)
-    except Exception:
-        pass
-    # Method 2: scrape YouTube page directly for ytInitialPlayerResponse
-    try:
-        url = f"https://www.youtube.com/watch?v={video_id}"
-        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1)', 'Accept-Language': 'en-US,en;q=0.9'})
-        with urllib.request.urlopen(req, timeout=10) as r:
-            html = r.read().decode('utf-8', errors='ignore')
-            # Find ytInitialPlayerResponse JSON blob
-            import re as _re
-            m = _re.search(r'ytInitialPlayerResponse\s*=\s*(\{.+?\});', html, _re.DOTALL)
-            if m:
-                try:
-                    player_data = json.loads(m.group(1))
-                    tracks = player_data.get('captions', {}).get('playerCaptionsTracklistRenderer', {}).get('captionTracks', [])
-                    if tracks:
-                        # Prefer English track, then first available
-                        caption_url = None
-                        for t in tracks:
-                            lang = t.get('languageCode', '')
-                            if lang == 'en':
-                                caption_url = t.get('baseUrl', '')
-                                break
-                        if not caption_url:
-                            caption_url = tracks[0].get('baseUrl', '')
-                        if caption_url:
-                            req2 = urllib.request.Request(caption_url, headers={'User-Agent': 'Mozilla/5.0'})
-                            with urllib.request.urlopen(req2, timeout=10) as r2:
-                                xml = r2.read().decode('utf-8', errors='ignore')
-                                texts = _re.findall(r'<text[^>]*>([^<]+)</text>', xml)
-                                if texts:
-                                    return ' '.join(texts)
-                except Exception:
-                    pass
+        from youtube_transcript_api import YouTubeTranscriptApi
+        transcript = YouTubeTranscriptApi().fetch(video_id)
+        if transcript and len(transcript):
+            if hasattr(transcript[0], 'text'):
+                return ' '.join(item.text for item in transcript)
+            elif isinstance(transcript[0], dict):
+                return ' '.join(item.get('text','') for item in transcript)
     except Exception:
         pass
     return ''
